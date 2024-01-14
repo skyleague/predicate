@@ -1,0 +1,43 @@
+{
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "debug.javascript.terminalOptions": {
+    "remoteRoot": null,
+    "skipFiles": ["<node_internals>/**"],
+    "sourceMaps": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "editor.formatOnSave": true,
+  "editor.wordSeparators": "`~!@#%^&*()-=+[{]}\\|;:'\",.<>/?",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.validate": ["javascript", "typescript"],
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.coverage": true,
+    "**/.dist": true,
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.hg": true,
+    "**/.husky": true,
+    "**/.svn": true,
+    "**/CVS": true,
+    "**/node_modules": true
+  },
+  "files.watcherExclude": {
+    "**/.coverage/*/**": true,
+    "**/.dist/**": true,
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "src/**/*.d.ts": true
+  },
+  "typescript.format.semicolons": "remove",
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.preferences.autoImportFileExcludePatterns": ["**/index.ts"],
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.tsdk": "./node_modules/typescript/lib"
+}

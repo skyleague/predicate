@@ -1,0 +1,193 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`max > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$defs": {
+        "Arithmetic": {
+          "additionalProperties": true,
+          "properties": {
+            "a": {
+              "type": "number",
+            },
+            "b": {
+              "type": "number",
+            },
+          },
+          "required": [
+            "a",
+            "b",
+          ],
+          "title": "Arithmetic",
+          "type": "object",
+        },
+      },
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "items": {
+            "type": "number",
+          },
+          "type": "array",
+        },
+        "b": {
+          "items": {
+            "$ref": "#/$defs/Arithmetic",
+          },
+          "type": "array",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "MathFn",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "max": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`max > handles numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "max": [
+        [
+          1,
+          2,
+        ],
+      ],
+    },
+  },
+}
+`;
+
+exports[`min > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$defs": {
+        "Arithmetic": {
+          "additionalProperties": true,
+          "properties": {
+            "a": {
+              "type": "number",
+            },
+            "b": {
+              "type": "number",
+            },
+          },
+          "required": [
+            "a",
+            "b",
+          ],
+          "title": "Arithmetic",
+          "type": "object",
+        },
+      },
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "items": {
+            "type": "number",
+          },
+          "type": "array",
+        },
+        "b": {
+          "items": {
+            "$ref": "#/$defs/Arithmetic",
+          },
+          "type": "array",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "MathFn",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "min": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`min > handles numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "min": [
+        [
+          1,
+          2,
+        ],
+      ],
+    },
+  },
+}
+`;

@@ -1,0 +1,432 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`all > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "b": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "c": {
+          "type": "boolean",
+        },
+        "d": {
+          "items": {
+            "additionalProperties": true,
+            "properties": {
+              "a": {
+                "type": "boolean",
+              },
+              "b": {
+                "type": "boolean",
+              },
+            },
+            "required": [
+              "a",
+              "b",
+            ],
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "e": {
+          "type": "boolean",
+        },
+      },
+      "required": [
+        "c",
+        "a",
+        "b",
+        "d",
+        "e",
+      ],
+      "title": "LogicObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.d[*].a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.d[*].b",
+      ],
+    },
+    "x3": {
+      "all": [
+        {
+          "from": [
+            "input",
+            "$.d[*].a",
+          ],
+        },
+        {
+          "value": "$",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`any > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "b": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "c": {
+          "type": "boolean",
+        },
+        "d": {
+          "items": {
+            "additionalProperties": true,
+            "properties": {
+              "a": {
+                "type": "boolean",
+              },
+              "b": {
+                "type": "boolean",
+              },
+            },
+            "required": [
+              "a",
+              "b",
+            ],
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "e": {
+          "type": "boolean",
+        },
+      },
+      "required": [
+        "c",
+        "a",
+        "b",
+        "d",
+        "e",
+      ],
+      "title": "LogicObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.d[*].a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.d[*].b",
+      ],
+    },
+    "x3": {
+      "any": [
+        {
+          "from": [
+            "input",
+            "$.d[*].a",
+          ],
+        },
+        {
+          "value": "$",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`endsWith > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "string",
+        },
+        "b": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "AbObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "endsWith": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`endsWith > handles two strings 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "endsWith": [
+        "1",
+        "2",
+      ],
+    },
+  },
+}
+`;
+
+exports[`includes > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "string",
+        },
+        "b": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "AbObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "includes": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`includes > handles two strings 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "includes": [
+        "1",
+        "2",
+      ],
+    },
+  },
+}
+`;
+
+exports[`startsWith > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "string",
+        },
+        "b": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "AbObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "startsWith": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`startsWith > handles two strings 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "startsWith": [
+        "1",
+        "2",
+      ],
+    },
+  },
+}
+`;

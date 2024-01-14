@@ -1,0 +1,320 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`and > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "b": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "c": {
+          "type": "boolean",
+        },
+        "d": {
+          "items": {
+            "additionalProperties": true,
+            "properties": {
+              "a": {
+                "type": "boolean",
+              },
+              "b": {
+                "type": "boolean",
+              },
+            },
+            "required": [
+              "a",
+              "b",
+            ],
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "e": {
+          "type": "boolean",
+        },
+      },
+      "required": [
+        "c",
+        "a",
+        "b",
+        "d",
+        "e",
+      ],
+      "title": "LogicObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "c": {
+      "from": [
+        "input",
+        "$.c",
+      ],
+    },
+    "e": {
+      "from": [
+        "input",
+        "$.e",
+      ],
+    },
+    "x2": {
+      "and": [
+        {
+          "from": [
+            "input",
+            "$.c",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.e",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`if > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "b": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "c": {
+          "type": "boolean",
+        },
+        "d": {
+          "items": {
+            "additionalProperties": true,
+            "properties": {
+              "a": {
+                "type": "boolean",
+              },
+              "b": {
+                "type": "boolean",
+              },
+            },
+            "required": [
+              "a",
+              "b",
+            ],
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "e": {
+          "type": "boolean",
+        },
+      },
+      "required": [
+        "c",
+        "a",
+        "b",
+        "d",
+        "e",
+      ],
+      "title": "LogicObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "if": [
+        {
+          "from": [
+            "input",
+            "$.c",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+        1,
+      ],
+    },
+  },
+}
+`;
+
+exports[`or > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "b": {
+          "anyOf": [
+            {
+              "type": "string",
+            },
+            {
+              "type": "boolean",
+            },
+            {
+              "type": "integer",
+            },
+          ],
+        },
+        "c": {
+          "type": "boolean",
+        },
+        "d": {
+          "items": {
+            "additionalProperties": true,
+            "properties": {
+              "a": {
+                "type": "boolean",
+              },
+              "b": {
+                "type": "boolean",
+              },
+            },
+            "required": [
+              "a",
+              "b",
+            ],
+            "type": "object",
+          },
+          "type": "array",
+        },
+        "e": {
+          "type": "boolean",
+        },
+      },
+      "required": [
+        "c",
+        "a",
+        "b",
+        "d",
+        "e",
+      ],
+      "title": "LogicObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "c": {
+      "from": [
+        "input",
+        "$.c",
+      ],
+    },
+    "e": {
+      "from": [
+        "input",
+        "$.e",
+      ],
+    },
+    "x2": {
+      "or": [
+        {
+          "from": [
+            "input",
+            "$.c",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.e",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
