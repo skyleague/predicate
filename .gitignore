@@ -1,0 +1,14 @@
+.*
+__pycache__
+node_modules
+yalc.lock
+
+!.github
+!.vscode
+!.npmrc
+
+!.gitignore
+!.gitkeep
+!.eslintrc.*
+!.prettierignore
+!.eslintignore

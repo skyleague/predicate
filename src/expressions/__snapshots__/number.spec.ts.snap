@@ -1,0 +1,376 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`add > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "number",
+        },
+        "b": {
+          "type": "number",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "Arithmetic",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "+": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`add > handles two numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "+": [
+        1,
+        2,
+      ],
+    },
+  },
+}
+`;
+
+exports[`divide > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "number",
+        },
+        "b": {
+          "type": "number",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "Arithmetic",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "/": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`divide > handles two numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "/": [
+        1,
+        2,
+      ],
+    },
+  },
+}
+`;
+
+exports[`mod > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "number",
+        },
+        "b": {
+          "type": "number",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "Arithmetic",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "%": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`mod > handles two numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "%": [
+        1,
+        2,
+      ],
+    },
+  },
+}
+`;
+
+exports[`multiply > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "number",
+        },
+        "b": {
+          "type": "number",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "Arithmetic",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "*": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`multiply > handles two numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "*": [
+        1,
+        2,
+      ],
+    },
+  },
+}
+`;
+
+exports[`subtract > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "number",
+        },
+        "b": {
+          "type": "number",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "Arithmetic",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "-": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`subtract > handles two numbers 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "-": [
+        1,
+        2,
+      ],
+    },
+  },
+}
+`;

@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`concat > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "type": "string",
+        },
+        "b": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "AbObj",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "concat": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "from": [
+            "input",
+            "$.b",
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`concat > handles two strings 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "concat": [
+        "1",
+        "2",
+      ],
+    },
+  },
+}
+`;

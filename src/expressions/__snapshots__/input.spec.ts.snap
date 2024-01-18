@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`from > simple single one is used as input 1`] = `
+{
+  "input": {
+    "person": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "age": {
+          "type": "number",
+        },
+        "birthDate": {
+          "type": "string",
+        },
+        "firstName": {
+          "type": "string",
+        },
+        "lastName": {
+          "type": "string",
+        },
+      },
+      "required": [
+        "firstName",
+        "lastName",
+        "birthDate",
+        "age",
+      ],
+      "title": "Person",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "firstName": {
+      "from": [
+        "person",
+        "$.firstName",
+      ],
+    },
+  },
+}
+`;

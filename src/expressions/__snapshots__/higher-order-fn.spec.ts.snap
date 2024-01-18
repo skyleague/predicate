@@ -1,0 +1,266 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`filter > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$defs": {
+        "Arithmetic": {
+          "additionalProperties": true,
+          "properties": {
+            "a": {
+              "type": "number",
+            },
+            "b": {
+              "type": "number",
+            },
+          },
+          "required": [
+            "a",
+            "b",
+          ],
+          "title": "Arithmetic",
+          "type": "object",
+        },
+      },
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "items": {
+            "type": "number",
+          },
+          "type": "array",
+        },
+        "b": {
+          "items": {
+            "$ref": "#/$defs/Arithmetic",
+          },
+          "type": "array",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "MathFn",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "filter": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "==": [
+            0,
+            {
+              "%": [
+                {
+                  "value": "$",
+                },
+                2,
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`map > handles a simple schema case 2`] = `
+{
+  "input": {
+    "input": {
+      "$defs": {
+        "Arithmetic": {
+          "additionalProperties": true,
+          "properties": {
+            "a": {
+              "type": "number",
+            },
+            "b": {
+              "type": "number",
+            },
+          },
+          "required": [
+            "a",
+            "b",
+          ],
+          "title": "Arithmetic",
+          "type": "object",
+        },
+      },
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "additionalProperties": true,
+      "properties": {
+        "a": {
+          "items": {
+            "type": "number",
+          },
+          "type": "array",
+        },
+        "b": {
+          "items": {
+            "$ref": "#/$defs/Arithmetic",
+          },
+          "type": "array",
+        },
+      },
+      "required": [
+        "a",
+        "b",
+      ],
+      "title": "MathFn",
+      "type": "object",
+    },
+  },
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "from": [
+        "input",
+        "$.a",
+      ],
+    },
+    "x2": {
+      "from": [
+        "input",
+        "$.b",
+      ],
+    },
+    "x3": {
+      "map": [
+        {
+          "from": [
+            "input",
+            "$.a",
+          ],
+        },
+        {
+          "+": [
+            {
+              "value": "$",
+            },
+            1,
+          ],
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`map > handles primitive 2`] = `
+{
+  "input": {},
+  "meta": {
+    "version": "1.0.0",
+  },
+  "output": {
+    "x1": {
+      "map": [
+        [
+          1,
+          2,
+        ],
+        {
+          "+": [
+            {
+              "value": "$",
+            },
+            1,
+          ],
+        },
+      ],
+    },
+    "x2": {
+      "map": [
+        [
+          "1",
+          "2",
+        ],
+        {
+          "concat": [
+            {
+              "value": "$",
+            },
+            "1",
+          ],
+        },
+      ],
+    },
+    "x3": {
+      "map": [
+        [
+          true,
+          false,
+        ],
+        {
+          "value": "$",
+        },
+      ],
+    },
+    "x4": {
+      "map": [
+        [
+          1,
+          2,
+        ],
+        [
+          1,
+          2,
+        ],
+      ],
+    },
+    "x5": {
+      "map": [
+        [
+          "1",
+          "2",
+        ],
+        [
+          "1",
+          "2",
+        ],
+      ],
+    },
+    "x6": {
+      "map": [
+        [
+          true,
+          false,
+        ],
+        [
+          true,
+          false,
+        ],
+      ],
+    },
+  },
+}
+`;
