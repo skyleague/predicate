@@ -14,10 +14,10 @@
   "engines": {
     "node": ">=20"
   },
-  "homepage": "https://skyleague.github.io/node-standards/",
+  "homepage": "https://skyleague.github.io/predicate/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/skyleague/node-standards.git"
+    "url": "https://github.com/skyleague/predicate.git"
   },
   "files": [
     ".dist",
