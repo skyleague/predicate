@@ -1,14 +1,14 @@
 import type {
-    FactExpression,
     DefinitionType,
     Expression,
-    InputExpression,
+    FactExpression,
     InferExpressionType,
+    InputExpression,
     LiteralExpression,
 } from '../engine/types.js'
 import type { FromExpr } from '../json/jsonexpr.type.js'
 
-import { type JSONPathValue, JSONPath } from '@skyleague/jsonpath'
+import { JSONPath, type JSONPathValue } from '@skyleague/jsonpath'
 import type { Schema } from '@skyleague/therefore'
 
 import { inspect } from 'node:util'
@@ -41,11 +41,11 @@ export interface From<I, O, DependsOn extends Expression[]> extends InputExpress
 export function $from<T, Name extends string>(fact: Fact<T, Name>): From<T, JSONPathValue<T, '$'>, [Fact<T, Name>]>
 export function $from<T, P extends string, Name extends string>(
     fact: Fact<T, Name>,
-    path: P
+    path: P,
 ): From<T, JSONPathValue<T, P>, [Fact<T, Name>]>
 export function $from<T, P extends string, Name extends string>(
     fact: Fact<T, Name>,
-    path: P = '$' as P
+    path: P = '$' as P,
 ): From<T, JSONPathValue<T, P>, [Fact<T, Name>]> {
     return {
         _type: 'value',

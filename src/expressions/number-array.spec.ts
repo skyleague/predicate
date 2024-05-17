@@ -5,12 +5,12 @@ import { $max, $min } from './number-array.js'
 import { MathFn } from '../../test/arithmatic.type.js'
 import type { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression } from '../engine/types.js'
+import type { LiteralExpression, ValueExpression } from '../engine/types.js'
 import type { MaxExpr, MinExpr, NumberArrExpr } from '../json/jsonexpr.type.js'
 
-import { forAll, float, array } from '@skyleague/axioms'
+import { array, float, forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
-import { describe, it, expect, expectTypeOf } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('min', () => {
     it('handles a simple schema case', () => {

@@ -8,12 +8,12 @@ import { $concat } from './string.js'
 import { MathFn } from '../../test/arithmatic.type.js'
 import type { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression, Expression } from '../engine/types.js'
+import type { Expression, LiteralExpression, ValueExpression } from '../engine/types.js'
 import type { JSONExpr, NumberArrExpr, NumberExpr } from '../json/jsonexpr.type.js'
 
 import { array, float, forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
-import { expect, describe, it, expectTypeOf } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('value', () => {
     it('handles the types', () => {

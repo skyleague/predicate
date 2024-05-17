@@ -3,8 +3,8 @@ import { $add, $divide, $modulo, $multiply, $subtract } from './number.js'
 
 import { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression } from '../engine/types.js'
-import type { NumberExpr, AddExpr, SubExpr, MulExpr, DivExpr, ModExpr } from '../json/jsonexpr.type.js'
+import type { LiteralExpression, ValueExpression } from '../engine/types.js'
+import type { AddExpr, DivExpr, ModExpr, MulExpr, NumberExpr, SubExpr } from '../json/jsonexpr.type.js'
 
 import { float, forAll, integer, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'

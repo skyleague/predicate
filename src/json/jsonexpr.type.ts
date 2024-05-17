@@ -3,8 +3,11 @@
  * Do not manually touch this
  */
 /* eslint-disable */
-import type { ValidateFunction } from 'ajv'
-import { ValidationError } from 'ajv'
+
+import type { DefinedError, ValidateFunction } from 'ajv'
+
+import { validate as JSONExprDefinitionValidator } from './schemas/json-expr-definition.schema.js'
+import { validate as JSONExprValidator } from './schemas/json-expr.schema.js'
 
 export interface AddExpr {
     '+': [NumberExpr, NumberExpr]
@@ -87,11 +90,11 @@ export interface IncludesExpr {
 export type JSONExpr =
     | ValueExpr
     | {
-          [k: string]: JSONExpr | [JSONExpr, ...JSONExpr[]]
+          [k: string]: (JSONExpr | [JSONExpr, ...JSONExpr[]]) | undefined
       }
 
 export const JSONExpr = {
-    validate: (await import('./schemas/json-expr.schema.js')).validate as ValidateFunction<JSONExpr>,
+    validate: JSONExprValidator as ValidateFunction<JSONExpr>,
     get schema() {
         return JSONExpr.validate.schema
     },
@@ -99,10 +102,11 @@ export const JSONExpr = {
         return JSONExpr.validate.errors ?? undefined
     },
     is: (o: unknown): o is JSONExpr => JSONExpr.validate(o) === true,
-    assert: (o: unknown) => {
-        if (!JSONExpr.validate(o)) {
-            throw new ValidationError(JSONExpr.errors ?? [])
+    parse: (o: unknown): { right: JSONExpr } | { left: DefinedError[] } => {
+        if (JSONExpr.is(o)) {
+            return { right: o }
         }
+        return { left: (JSONExpr.errors ?? []) as DefinedError[] }
     },
 } as const
 
@@ -110,16 +114,18 @@ export interface JSONExprDefinition {
     meta: {
         version: string
     }
-    input?: {
-        [k: string]: unknown | undefined
-    }
+    input?:
+        | {
+              [k: string]: unknown
+          }
+        | undefined
     output: {
         [k: string]: JSONExpr | undefined
     }
 }
 
 export const JSONExprDefinition = {
-    validate: (await import('./schemas/json-expr-definition.schema.js')).validate as ValidateFunction<JSONExprDefinition>,
+    validate: JSONExprDefinitionValidator as ValidateFunction<JSONExprDefinition>,
     get schema() {
         return JSONExprDefinition.validate.schema
     },
@@ -127,10 +133,11 @@ export const JSONExprDefinition = {
         return JSONExprDefinition.validate.errors ?? undefined
     },
     is: (o: unknown): o is JSONExprDefinition => JSONExprDefinition.validate(o) === true,
-    assert: (o: unknown) => {
-        if (!JSONExprDefinition.validate(o)) {
-            throw new ValidationError(JSONExprDefinition.errors ?? [])
+    parse: (o: unknown): { right: JSONExprDefinition } | { left: DefinedError[] } => {
+        if (JSONExprDefinition.is(o)) {
+            return { right: o }
         }
+        return { left: (JSONExprDefinition.errors ?? []) as DefinedError[] }
     },
 } as const
 

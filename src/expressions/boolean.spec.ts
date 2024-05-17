@@ -6,12 +6,12 @@ import { $modulo } from './number.js'
 import { LogicObj } from '../../test/logic.type.js'
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression } from '../engine/types.js'
+import type { LiteralExpression, ValueExpression } from '../engine/types.js'
 import type { BooleanExpr, EndsWithExpr, IncludesExpr, NumberArrExpr, StartsWithExpr, StringExpr } from '../json/jsonexpr.type.js'
 
 import { array, float, forAll, string, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
-import { it, expect, describe, expectTypeOf } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('startsWith', () => {
     it('handles a simple schema case', () => {

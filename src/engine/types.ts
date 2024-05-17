@@ -33,6 +33,7 @@ export type InferExpressionType<T> = T extends readonly (infer U)[]
           ? BooleanExpr
           : JSONExpr
 
+// biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
 export interface Expression<O = any, I = any, Expr extends JSONExpr | ValueItemExpr = InferExpressionType<O>> {
     _input?: I
     _output?: O
@@ -46,6 +47,7 @@ export interface Expression<O = any, I = any, Expr extends JSONExpr | ValueItemE
 
 export type ExpressionReturnType<E> = E extends Pick<Expression, 'fn'> ? ReturnType<E['fn']> : E
 
+// biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
 export interface LiteralExpression<O = any, Expr extends JSONExpr = InferExpressionType<O>> extends Expression<O, any, Expr> {
     dependsOn: []
     _type: 'literal'

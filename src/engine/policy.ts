@@ -1,11 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import type { Expression, ExpressionReturnType } from './types.js'
-
-import { version } from '../../package.json'
-
-import type { SimplifyOnce } from '@skyleague/axioms'
 import { collect, stack } from '@skyleague/axioms'
-import type { UnionToIntersection } from 'type-fest'
+import type { Simplify, UnionToIntersection } from '@skyleague/axioms/types'
+import { version } from '../../package.json'
+import type { Expression, ExpressionReturnType } from './types.js'
 
 export class EvaluationContext {
     public evaluated = new WeakMap<object, unknown>()
@@ -24,7 +20,6 @@ export class EvaluationContext {
             return this.evaluated.get(expr) as O
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         const input = expr.dependsOn.map((d) => this.evaluate(d))
 
         const result = expr.fn(input, this)
@@ -85,19 +80,19 @@ type FilterFactExpressions<Facts extends Record<string, unknown>, k extends keyo
     : never
 
 type CollapseTreeToArray<T> = T extends { dependsOn: (infer U)[] } ? T | CollapseTreeToArray<U> : T
-type _InputFromExpressions<Facts extends Record<string, unknown>> = SimplifyOnce<{
+type _InputFromExpressions<Facts extends Record<string, unknown>> = Simplify<{
     [k in keyof Facts as FilterFactExpressions<Facts, k>]: ExpressionReturnType<Facts[k]>
 }>
 type NamedUnionToRecord<T> = T extends { name: infer Name } ? (Name extends PropertyKey ? { [k in Name]: T } : never) : never
 
-export type InputFromExpressions<Facts extends Record<string, unknown>> = SimplifyOnce<
+export type InputFromExpressions<Facts extends Record<string, unknown>> = Simplify<
     _InputFromExpressions<Facts> &
         _InputFromExpressions<
             UnionToIntersection<NamedUnionToRecord<Facts extends Record<string, infer E> ? CollapseTreeToArray<E> : never>>
         >
 >
 
-export type OutputFromFacts<Facts extends Record<string, unknown>> = SimplifyOnce<{
+export type OutputFromFacts<Facts extends Record<string, unknown>> = Simplify<{
     [k in keyof Facts]: ExpressionReturnType<Facts[k]>
 }>
 
@@ -107,7 +102,8 @@ export interface Policy<I, O> {
 }
 
 export function $policy<Facts extends Record<string, Expression>>(
-    expressions: Facts
+    expressions: Facts,
+    // @ts-ignore
 ): Policy<InputFromExpressions<Facts>, OutputFromFacts<Facts>> {
     const facts = Object.entries(expressions).map(([name, e]) => {
         if (e.name === undefined) {
@@ -119,14 +115,15 @@ export function $policy<Facts extends Record<string, Expression>>(
     const allNodes = collect(collapseExpression(facts))
     const inputNodes = allNodes.filter(
         (f: (typeof allNodes)[number]): f is (typeof allNodes)[number] & { name: string } =>
-            f._type === 'fact' && f.name !== undefined
+            f._type === 'fact' && f.name !== undefined,
     )
     const outputNodes = allNodes.filter((f) => f._type !== 'fact' && f.name !== undefined)
 
     const properties = Object.fromEntries(inputNodes.map((e) => [e.name, e.expr('definition')]))
     const outputExpression = Object.fromEntries(outputNodes.map((f) => [f.name, f.expr('expression')]))
     return {
-        evaluate: function (input: Record<string, unknown>) {
+        // @ts-ignore
+        evaluate: ((input: Record<string, unknown>) => {
             const ctx = new EvaluationContext(input)
 
             for (const fact of facts) {
@@ -136,10 +133,9 @@ export function $policy<Facts extends Record<string, Expression>>(
                 }
             }
 
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return { input: input, output: ctx.state } as any
-        } as Policy<InputFromExpressions<Facts>, OutputFromFacts<Facts>>['evaluate'],
-        expr: function () {
+            return { input: input, output: ctx.state }
+        }) as Policy<InputFromExpressions<Facts>, OutputFromFacts<Facts>>['evaluate'],
+        expr: () => {
             const input = properties
             return {
                 meta: {

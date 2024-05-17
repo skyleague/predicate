@@ -7,5 +7,5 @@ export const logicObj = $validator(
         b: $union([$string, $boolean, $integer]),
         d: $array($object({ a: $boolean, b: $boolean })),
         e: $boolean,
-    })
+    }),
 )

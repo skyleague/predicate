@@ -6,10 +6,7 @@
   "types": "./.dist/index.d.ts",
   "sideEffects": false,
   "node-standards": {
-    "extends": [
-      "library",
-      "docusaurus"
-    ]
+    "extends": ["library", "docusaurus"]
   },
   "engines": {
     "node": ">=20"
@@ -19,34 +16,28 @@
     "type": "git",
     "url": "https://github.com/skyleague/predicate.git"
   },
-  "files": [
-    ".dist",
-    "package.json"
-  ],
+  "files": [".dist", "package.json"],
   "scripts": {
-    "build": "node --import tsx/esm build.config.ts",
+    "build": "tsc -p tsconfig.dist.json",
     "build:docs": "npm run --workspace=docs build",
     "check:coverage": "vitest run --coverage=true",
     "check:project": "node-standards lint",
     "check:types": "tsc -p tsconfig.json",
-    "format": "prettier \"**/*.{ts,js,json,yml,yaml,md}\" --write",
-    "lint": "eslint \"./{src,test,typings}/**/*.ts\" --cache --no-eslintrc --config .eslintrc.cjs",
-    "lint:fix": "npm run lint -- --fix",
+    "lint": "biome check src test examples",
+    "lint:fix": "npm run lint -- --apply-unsafe",
     "package": "rm -rf .dist && npm run build",
     "prepare": "husky || true",
     "test": "vitest run"
   },
   "dependencies": {
-    "@skyleague/jsonpath": "^3.1.1",
-    "tslib": "^2.6.2",
-    "type-fest": "^4.10.2"
+    "@skyleague/jsonpath": "^3.1.1"
   },
   "devDependencies": {
-    "@skyleague/axioms": "^3.6.0",
-    "@skyleague/node-standards": "^5.1.7",
-    "@skyleague/therefore": "^4.1.1",
+    "@skyleague/axioms": "^4.3.1",
+    "@skyleague/node-standards": "^7.0.2",
+    "@skyleague/therefore": "^5.1.1",
     "@types/uuid": "^9.0.8",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.5",
     "uuid": "^9.0.1"
   },
   "publishConfig": {
@@ -60,7 +51,5 @@
     "./package.json": "./package.json",
     "./*.js": "./.dist/*.js"
   },
-  "workspaces": [
-    "docs"
-  ]
+  "workspaces": ["docs"]
 }

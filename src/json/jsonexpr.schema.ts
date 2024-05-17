@@ -1,27 +1,14 @@
-import type { ThereforeNode } from '@skyleague/therefore'
-import {
-    $array,
-    $boolean,
-    $dict,
-    $number,
-    $object,
-    $optional,
-    $ref,
-    $string,
-    $tuple,
-    $union,
-    $unknown,
-    $validator,
-} from '@skyleague/therefore'
+import type { Node } from '@skyleague/therefore'
+import { $array, $boolean, $number, $object, $record, $ref, $string, $tuple, $union, $unknown } from '@skyleague/therefore'
 
 export const fromExpr = $object({ from: $tuple([$string, $string]) })
 export const valueItemExpr = $object({ value: $string })
 
-export const numberExpr = $union([$ref(fromExpr), $number, $ref(() => numberFnExpr), $ref(valueItemExpr)])
+export const numberExpr: Node = $union([$ref(fromExpr), $number, $ref(() => numberFnExpr), $ref(valueItemExpr)])
 export const numberArrExpr = $union([$ref(fromExpr), $array($number), $ref(valueItemExpr)])
-export const stringExpr = $union([$ref(fromExpr), $string, $ref(() => stringFnExpr), $ref(valueItemExpr)])
+export const stringExpr: Node = $union([$ref(fromExpr), $string, $ref(() => stringFnExpr), $ref(valueItemExpr)])
 export const stringArrExpr = $union([$ref(fromExpr), $array($string), $ref(valueItemExpr)])
-export const booleanExpr = $union([$ref(fromExpr), $boolean, $ref(() => booleanFnExpr), $ref(valueItemExpr)])
+export const booleanExpr: Node = $union([$ref(fromExpr), $boolean, $ref(() => booleanFnExpr), $ref(valueItemExpr)])
 export const booleanArrExpr = $union([$ref(fromExpr), $array($boolean), $ref(valueItemExpr)])
 
 export const addExpr = $object({
@@ -159,32 +146,25 @@ export const filterExpr = $object({
     filter: $tuple([$ref(valueExpr), $ref(booleanExpr)]),
 })
 
-export const hofExpr = $union([$ref(mapExpr), $ref(filterExpr)])
+export const hofExpr: Node = $union([$ref(mapExpr), $ref(filterExpr)])
 
-export const JSONExpr: ThereforeNode = $validator(
-    $union([
-        $ref(valueExpr),
-        $object(
-            {},
-            {
-                indexSignature: $union([
-                    $ref(() => JSONExpr),
-                    $array(
-                        $ref(() => JSONExpr),
-                        { minItems: 1 }
-                    ),
-                ]),
-            }
-        ),
-    ])
-)
+export const JSONExpr: Node = $union([
+    $ref(valueExpr),
+    $record(
+        $union([
+            $ref(() => JSONExpr),
+            $array(
+                $ref(() => JSONExpr),
+                { minItems: 1 },
+            ),
+        ]),
+    ),
+]).validator()
 
-export const JSONExprDefinition = $validator(
-    $object({
-        meta: $object({
-            version: $string,
-        }),
-        input: $optional($dict($unknown)),
-        output: $dict($ref(JSONExpr)),
-    })
-)
+export const JSONExprDefinition = $object({
+    meta: $object({
+        version: $string,
+    }),
+    input: $record($unknown).optional(),
+    output: $record($ref(JSONExpr)),
+}).validator()
