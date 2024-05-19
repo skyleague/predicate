@@ -97,6 +97,7 @@ describe('concat', () => {
                     // these duplicates are not the nicest
                     ...(LiteralExpression<'1', StringExpr> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                never,
                 ConcatExpr
             >
         >()
@@ -106,11 +107,12 @@ describe('concat', () => {
             ValueExpression<
                 string,
                 [
-                    From<AbObj, string, [Fact<AbObj, 'input'>]>,
+                    From<AbObj, string, Fact<AbObj, 'input'>>,
                     LiteralExpression<'2', StringExpr>,
                     // these duplicates are not the nicest
-                    ...(From<AbObj, string, [Fact<AbObj, 'input'>]> | LiteralExpression<'2', StringExpr>)[],
+                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                [Fact<AbObj, 'input'>],
                 ConcatExpr
             >
         >()
@@ -121,10 +123,11 @@ describe('concat', () => {
                 string,
                 [
                     LiteralExpression<'2', StringExpr>,
-                    From<AbObj, string, [Fact<AbObj, 'input'>]>,
+                    From<AbObj, string, Fact<AbObj, 'input'>>,
                     // these duplicates are not the nicest
-                    ...(From<AbObj, string, [Fact<AbObj, 'input'>]> | LiteralExpression<'2', StringExpr>)[],
+                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                [Fact<AbObj, 'input'>],
                 ConcatExpr
             >
         >()

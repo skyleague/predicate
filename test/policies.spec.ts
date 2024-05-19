@@ -33,8 +33,9 @@ describe('arbitrary', () => {
 
 describe('any string starts with', () => {
     const inputs = ['foo', 'bar', 'baz']
-    const startedWith: ValueExpression<boolean[], [LiteralExpression<string[], StringArrExpr>], BooleanExpr> = $map(inputs, (x) =>
-        $startsWith(x, 'foo'),
+    const startedWith: ValueExpression<boolean[], [LiteralExpression<string[], StringArrExpr>], never, BooleanExpr> = $map(
+        inputs,
+        (x) => $startsWith(x, 'foo'),
     )
     const startsWithFoo = $policy({ startedWith })
 
