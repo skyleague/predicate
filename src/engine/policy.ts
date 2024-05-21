@@ -1,8 +1,10 @@
 import { collect, stack } from '@skyleague/axioms'
 import type { IsEmptyObject, Simplify } from '@skyleague/axioms/types'
-import { version } from '../../package.json'
+import packageJSON from '../../package.json' with { type: 'json' }
 import type { FactsFomExprs } from './operator.js'
 import type { Expression, ExpressionReturnType } from './types.js'
+
+const { version } = packageJSON
 
 export class EvaluationContext {
     public evaluated = new WeakMap<object, unknown>()

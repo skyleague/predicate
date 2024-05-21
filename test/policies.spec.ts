@@ -2,10 +2,10 @@ import { valueExpression } from './arbitraries.js'
 
 import { parseJSONExpression } from '../src/engine/parse.js'
 import { $policy, type Policy } from '../src/engine/policy.js'
-import type { LiteralExpression, ValueExpression } from '../src/engine/types.js'
+import type { ValueExpression } from '../src/engine/types.js'
 import { $startsWith } from '../src/expressions/boolean.js'
 import { $map } from '../src/expressions/higher-order-fn.js'
-import { type BooleanExpr, JSONExprDefinition, type StringArrExpr } from '../src/json/jsonexpr.type.js'
+import { type BooleanExpr, JSONExprDefinition } from '../src/json/jsonexpr.type.js'
 
 import { forAll } from '@skyleague/axioms'
 import { describe, expect, it } from 'vitest'
@@ -33,10 +33,7 @@ describe('arbitrary', () => {
 
 describe('any string starts with', () => {
     const inputs = ['foo', 'bar', 'baz']
-    const startedWith: ValueExpression<boolean[], [LiteralExpression<string[], StringArrExpr>], never, BooleanExpr> = $map(
-        inputs,
-        (x) => $startsWith(x, 'foo'),
-    )
+    const startedWith: ValueExpression<boolean[], [string[]], never, BooleanExpr> = $map(inputs, (x) => $startsWith(x, 'foo'))
     const startsWithFoo = $policy({ startedWith })
 
     it('handles a simple schema case', () => {

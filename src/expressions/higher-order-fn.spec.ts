@@ -1,14 +1,14 @@
 import { $equal } from './boolean.js'
 import { $filter, $map, $value, type ValueItem } from './higher-order-fn.js'
 import { $fact, $literal, type Fact } from './input.js'
-import { $from, type From } from './input.js'
+import { $from } from './input.js'
 import { $add, $modulo, $multiply } from './number.js'
 import { $concat } from './string.js'
 
 import { MathFn } from '../../test/arithmatic.type.js'
 import type { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { Expression, LiteralExpression, ValueExpression } from '../engine/types.js'
+import type { Expression, ValueExpression } from '../engine/types.js'
 import type { JSONExpr, NumberArrExpr, NumberExpr } from '../json/jsonexpr.type.js'
 
 import { array, float, forAll } from '@skyleague/axioms'
@@ -181,27 +181,19 @@ describe('map', () => {
         const fact = $fact(MathFn, 'input')
 
         const x1 = $map([1, 2], (x) => x)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number[], [LiteralExpression<number[], NumberArrExpr>], never, NumberExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number[], [number[]], never, NumberExpr>>()
 
         const a = $from(fact, '$.a')
         const x2 = $map(a, (x) => x)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<number[], [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], NumberExpr>
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number[], [number[]], [Fact<MathFn, 'input'>], NumberExpr>>()
 
         const ba = $from(fact, '$.b..a')
         const x3 = $map(ba, (x) => x)
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<number[], [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], NumberExpr>
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number[], [number[]], [Fact<MathFn, 'input'>], NumberExpr>>()
 
         const b = $from(fact, '$.b')
         const x4 = $map(b, (x) => x('$.a'))
-        expectTypeOf(x4).toEqualTypeOf<
-            ValueExpression<number[], [From<MathFn, Arithmetic[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], NumberExpr>
-        >()
+        expectTypeOf(x4).toEqualTypeOf<ValueExpression<number[], [Arithmetic[]], [Fact<MathFn, 'input'>], NumberExpr>>()
     })
 })
 
@@ -291,26 +283,18 @@ describe('filter', () => {
         const fact = $fact(MathFn, 'input')
 
         const x1 = $filter([1, 2], (x) => $equal(x, 1))
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number[], [LiteralExpression<number[], NumberArrExpr>], never, NumberArrExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number[], [number[]], never, NumberArrExpr>>()
 
         const a = $from(fact, '$.a')
         const x2 = $filter(a, (x) => $equal(x, 1))
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<number[], [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], NumberArrExpr>
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number[], [number[]], [Fact<MathFn, 'input'>], NumberArrExpr>>()
 
         const ba = $from(fact, '$.b..a')
         const x3 = $filter(ba, (x) => $equal(x, 1))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<number[], [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], NumberArrExpr>
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number[], [number[]], [Fact<MathFn, 'input'>], NumberArrExpr>>()
 
         const b = $from(fact, '$.b')
         const x4 = $filter(b, (x) => $equal(1, x('$.a')))
-        expectTypeOf(x4).toEqualTypeOf<
-            ValueExpression<Arithmetic[], [From<MathFn, Arithmetic[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], JSONExpr>
-        >()
+        expectTypeOf(x4).toEqualTypeOf<ValueExpression<Arithmetic[], [Arithmetic[]], [Fact<MathFn, 'input'>], JSONExpr>>()
     })
 })

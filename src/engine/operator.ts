@@ -1,9 +1,9 @@
 import { inspect } from 'node:util'
 import type { JSONExpr } from '../json/jsonexpr.type.js'
-import type { AsExpression, DefinitionType, Expression, ValueExpression } from './types.js'
+import type { AsExpression, DefinitionType, Expression, InputFromExpressions, ValueExpression } from './types.js'
 import { fromLiteral } from './types.js'
 
-export type FactsFomExprs<T> = T extends { facts: infer U } ? U : never
+export type FactsFomExprs<T> = T extends Expression ? (T extends { facts: infer U } ? U : never) : never
 
 // biome-ignore lint/suspicious/noExplicitAny: any is necessary for the operator function
 export interface Operator<I extends any[], O, Op extends string> {
@@ -13,7 +13,7 @@ export interface Operator<I extends any[], O, Op extends string> {
         ...exprs: Exprs
     ): ValueExpression<
         O,
-        { [K in keyof I]: AsExpression<Exprs[K]> },
+        InputFromExpressions<{ [K in keyof I]: AsExpression<Exprs[K]> }>,
         FactsFomExprs<Exprs[number]>,
         // biome-ignore lint/suspicious/noExplicitAny: any is necessary for the operator function
         Extract<JSONExpr, Record<Op, any[] | JSONExpr>>

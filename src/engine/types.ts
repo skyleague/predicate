@@ -75,8 +75,7 @@ export type InputFromExpressions<Expr extends Expression[]> = {
     [k in keyof Expr]: ExpressionReturnType<Expr[k]>
 }
 
-export interface ValueExpression<O, DependsOn extends Expression[], Facts, Expr extends JSONExpr = InferExpressionType<O>>
-    extends Expression<O, InputFromExpressions<DependsOn>, Expr> {
+export interface ValueExpression<O, I, Facts, Expr extends JSONExpr = InferExpressionType<O>> extends Expression<O, I, Expr> {
     // dependsOn: DependsOn
     facts: Facts //extends FactExpression ? [Facts] : never
     _type?: 'value'
