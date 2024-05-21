@@ -3,6 +3,7 @@ import {
     type AsExpression,
     type Expression,
     type ExpressionTypeOfLiteral,
+    type InputFromExpressions,
     type LiteralOr,
     type ValueExpression,
     fromLiteral,
@@ -17,7 +18,7 @@ export const $if = Object.assign(
         _b: VE,
     ): ValueExpression<
         ExpressionTypeOfLiteral<UE> | ExpressionTypeOfLiteral<VE>,
-        [AsExpression<CE>, AsExpression<UE>, AsExpression<VE>],
+        InputFromExpressions<[AsExpression<CE>, AsExpression<UE>, AsExpression<VE>]>,
         FactsFomExprs<CE | UE | VE>,
         IfExpr
     > => {

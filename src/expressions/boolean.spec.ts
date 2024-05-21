@@ -1,21 +1,13 @@
 import { $all, $any, $endsWith, $equal, $includes, $startsWith } from './boolean.js'
 import { $fact, $literal, type Fact } from './input.js'
-import { $from, type From } from './input.js'
+import { $from } from './input.js'
 import { $modulo } from './number.js'
 
 import { LogicObj } from '../../test/logic.type.js'
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
-import type { LiteralExpression, ValueExpression } from '../engine/types.js'
-import type {
-    BooleanExpr,
-    EndsWithExpr,
-    IncludesExpr,
-    NumberArrExpr,
-    StartsWithExpr,
-    StringArrExpr,
-    StringExpr,
-} from '../json/jsonexpr.type.js'
+import type { ValueExpression } from '../engine/types.js'
+import type { BooleanExpr, EndsWithExpr, IncludesExpr, StartsWithExpr } from '../json/jsonexpr.type.js'
 
 import { array, float, forAll, string, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -97,33 +89,16 @@ describe('startsWith', () => {
         const fact = $fact(AbObj, 'input')
 
         const x1 = $startsWith('1', '2')
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [LiteralExpression<'1', StringExpr>, LiteralExpression<'2', StringExpr>],
-                never,
-                StartsWithExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, [str: '1', searchString: '2'], never, StartsWithExpr>>()
 
         const x2 = $startsWith($from(fact, '$.a'), '2')
         expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: From<AbObj, string, Fact<AbObj, 'input'>>, searchString: LiteralExpression<'2', StringExpr>],
-                [Fact<AbObj, 'input'>],
-                StartsWithExpr
-            >
+            ValueExpression<boolean, [str: string, searchString: '2'], [Fact<AbObj, 'input'>], StartsWithExpr>
         >()
 
         const x3 = $startsWith('2', $from(fact, '$.b'))
         expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: LiteralExpression<'2', StringExpr>, searchString: From<AbObj, string, Fact<AbObj, 'input'>>],
-                [Fact<AbObj, 'input'>],
-                StartsWithExpr
-            >
+            ValueExpression<boolean, [str: '2', searchString: string], [Fact<AbObj, 'input'>], StartsWithExpr>
         >()
     })
 })
@@ -204,33 +179,16 @@ describe('endsWith', () => {
         const fact = $fact(AbObj, 'input')
 
         const x1 = $endsWith('1', '2')
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: LiteralExpression<'1', StringExpr>, searchString: LiteralExpression<'2', StringExpr>],
-                never,
-                EndsWithExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, [str: '1', searchString: '2'], never, EndsWithExpr>>()
 
         const x2 = $endsWith($from(fact, '$.a'), '2')
         expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: From<AbObj, string, Fact<AbObj, 'input'>>, searchString: LiteralExpression<'2', StringExpr>],
-                [Fact<AbObj, 'input'>],
-                EndsWithExpr
-            >
+            ValueExpression<boolean, [str: string, searchString: '2'], [Fact<AbObj, 'input'>], EndsWithExpr>
         >()
 
         const x3 = $endsWith('2', $from(fact, '$.b'))
         expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: LiteralExpression<'2', StringExpr>, searchString: From<AbObj, string, Fact<AbObj, 'input'>>],
-                [Fact<AbObj, 'input'>],
-                EndsWithExpr
-            >
+            ValueExpression<boolean, [str: '2', searchString: string], [Fact<AbObj, 'input'>], EndsWithExpr>
         >()
     })
 })
@@ -311,33 +269,16 @@ describe('includes', () => {
         const fact = $fact(AbObj, 'input')
 
         const x1 = $includes('1', '2')
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [LiteralExpression<'1', StringExpr>, LiteralExpression<'2', StringExpr>],
-                never,
-                IncludesExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, [str: '1', searchString: '2'], never, IncludesExpr>>()
 
         const x2 = $includes($from(fact, '$.a'), '2')
         expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: From<AbObj, string, Fact<AbObj, 'input'>>, searchString: LiteralExpression<'2', StringExpr>],
-                [Fact<AbObj, 'input'>],
-                IncludesExpr
-            >
+            ValueExpression<boolean, [str: string, searchString: '2'], [Fact<AbObj, 'input'>], IncludesExpr>
         >()
 
         const x3 = $includes('2', $from(fact, '$.b'))
         expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                [str: LiteralExpression<'2', StringExpr>, searchString: From<AbObj, string, Fact<AbObj, 'input'>>],
-                [Fact<AbObj, 'input'>],
-                IncludesExpr
-            >
+            ValueExpression<boolean, [str: '2', searchString: string], [Fact<AbObj, 'input'>], IncludesExpr>
         >()
     })
 })
@@ -442,9 +383,7 @@ describe('all', () => {
         const fact = $fact(LogicObj, 'input')
 
         const x1 = $all([1, 2], (x) => $equal(x, 1))
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<boolean, [LiteralExpression<number[], NumberArrExpr>], never, BooleanExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, [number[]], never, BooleanExpr>>()
 
         const a = $from(fact, '$.d')
         const x2 = $all(a, (x) => $equal(x, 1))
@@ -452,25 +391,19 @@ describe('all', () => {
             ValueExpression<
                 boolean,
                 [
-                    From<
-                        LogicObj,
-                        {
-                            a: boolean
-                            b: boolean
-                        }[],
-                        Fact<LogicObj, 'input'>
-                    >,
+                    {
+                        a: boolean
+                        b: boolean
+                    }[],
                 ],
                 [Fact<LogicObj, 'input'>],
                 BooleanExpr
             >
         >()
 
-        const ba = $from(fact, '$.b..a')
-        const x3 = $all(ba, (x) => $equal(x, 1))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<boolean, [From<LogicObj, never[], Fact<LogicObj, 'input'>>], [Fact<LogicObj, 'input'>], BooleanExpr>
-        >()
+        const da = $from(fact, '$.d..a')
+        const x3 = $all(da, (x) => $equal(x, 1))
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<boolean, [boolean[]], [Fact<LogicObj, 'input'>], BooleanExpr>>()
     })
 })
 
@@ -574,9 +507,7 @@ describe('any', () => {
         const fact = $fact(LogicObj, 'input')
 
         const x1 = $any([1, 2], (x) => $equal(x, 1))
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<boolean, [LiteralExpression<number[], NumberArrExpr>], never, BooleanExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, [number[]], never, BooleanExpr>>()
 
         const a = $from(fact, '$.d')
         const x2 = $any(a, (x) => $equal(x, 1))
@@ -584,29 +515,21 @@ describe('any', () => {
             ValueExpression<
                 boolean,
                 [
-                    From<
-                        LogicObj,
-                        {
-                            a: boolean
-                            b: boolean
-                        }[],
-                        Fact<LogicObj, 'input'>
-                    >,
+                    {
+                        a: boolean
+                        b: boolean
+                    }[],
                 ],
                 [Fact<LogicObj, 'input'>],
                 BooleanExpr
             >
         >()
 
-        const ba = $from(fact, '$.b..a')
-        const x3 = $any(ba, (x) => $equal(x, 1))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<boolean, [From<LogicObj, never[], Fact<LogicObj, 'input'>>], [Fact<LogicObj, 'input'>], BooleanExpr>
-        >()
+        const da = $from(fact, '$.d..a')
+        const x3 = $any(da, (x) => $equal(x, 1))
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<boolean, [boolean[]], [Fact<LogicObj, 'input'>], BooleanExpr>>()
 
         const x4 = $any($literal(['foo']), (x) => $equal(x, a))
-        expectTypeOf(x4).toEqualTypeOf<
-            ValueExpression<boolean, [LiteralExpression<string[], StringArrExpr>], [Fact<LogicObj, 'input'>], BooleanExpr>
-        >()
+        expectTypeOf(x4).toEqualTypeOf<ValueExpression<boolean, [string[]], [Fact<LogicObj, 'input'>], BooleanExpr>>()
     })
 })

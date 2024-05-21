@@ -6,6 +6,7 @@ import {
     type ExpressionTypeOfLiteral,
     type InferExpressionType,
     type InputExpression,
+    type InputFromExpressions,
     type LiteralOr,
     type ValueExpression,
     fromLiteral,
@@ -65,7 +66,7 @@ export const $map = Object.assign(
         transform: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => AsExpression<O>,
     ): ValueExpression<
         ExpressionTypeOfLiteral<O>[],
-        [AsExpression<Expr>],
+        InputFromExpressions<[AsExpression<Expr>]>,
         FactsFomExprs<Expr>,
         InferExpressionType<ExpressionTypeOfLiteral<O>>
     > => {
@@ -85,7 +86,7 @@ export const $map = Object.assign(
             },
         } as ValueExpression<
             ExpressionTypeOfLiteral<O>[],
-            [AsExpression<Expr>],
+            InputFromExpressions<[AsExpression<Expr>]>,
             FactsFomExprs<Expr>,
             InferExpressionType<ExpressionTypeOfLiteral<O>>
         >
@@ -101,7 +102,7 @@ export const $filter = Object.assign(
         predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>,
     ): ValueExpression<
         ExpressionTypeOfLiteral<Expr>,
-        [AsExpression<Expr>],
+        InputFromExpressions<[AsExpression<Expr>]>,
         FactsFomExprs<Expr>,
         InferExpressionType<ExpressionTypeOfLiteral<Expr>>
     > => {
@@ -121,7 +122,7 @@ export const $filter = Object.assign(
             },
         } as ValueExpression<
             ExpressionTypeOfLiteral<Expr>,
-            [AsExpression<Expr>],
+            InputFromExpressions<[AsExpression<Expr>]>,
             FactsFomExprs<Expr>,
             InferExpressionType<ExpressionTypeOfLiteral<Expr>>
         >

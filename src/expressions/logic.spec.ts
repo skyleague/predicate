@@ -1,10 +1,10 @@
-import { $fact, $from, type Fact, type From } from './input.js'
+import { $fact, $from, type Fact } from './input.js'
 import { $and, $if, $or } from './logic.js'
 
 import { LogicObj } from '../../test/logic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { LiteralExpression, ValueExpression } from '../engine/types.js'
-import type { AndExpr, BooleanExpr, IfExpr, NumberExpr, OrExpr, StringExpr } from '../json/jsonexpr.type.js'
+import type { ValueExpression } from '../engine/types.js'
+import type { AndExpr, IfExpr, OrExpr } from '../json/jsonexpr.type.js'
 
 import { forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -68,32 +68,10 @@ describe('if', () => {
 
     it('handles the types', () => {
         const x1 = $if(false, 1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [
-                    LiteralExpression<false, BooleanExpr>,
-                    LiteralExpression<number, NumberExpr>,
-                    LiteralExpression<number, NumberExpr>,
-                ],
-                never,
-                IfExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [false, number, number], never, IfExpr>>()
 
         const x2 = $if(true, 1, '2')
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                string | number,
-                [
-                    LiteralExpression<true, BooleanExpr>,
-                    LiteralExpression<number, NumberExpr>,
-                    LiteralExpression<string, StringExpr>,
-                ],
-                never,
-                IfExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<string | number, [true, number, string], never, IfExpr>>()
     })
 })
 
@@ -155,34 +133,13 @@ describe('and', () => {
         const fact = $fact(LogicObj, 'input')
 
         const x1 = $and(false, true, false)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (LiteralExpression<false, BooleanExpr> | LiteralExpression<true, BooleanExpr>)[],
-                never,
-                AndExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, boolean[], never, AndExpr>>()
 
         const x2 = $and($from(fact, '$.c'), true)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (LiteralExpression<true, BooleanExpr> | From<LogicObj, boolean, Fact<LogicObj, 'input'>>)[],
-                [Fact<LogicObj, 'input'>],
-                AndExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<boolean, boolean[], [Fact<LogicObj, 'input'>], AndExpr>>()
 
         const x3 = $and(true, $from(fact, '$.e'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (From<LogicObj, boolean, Fact<LogicObj, 'input'>> | LiteralExpression<true, BooleanExpr>)[],
-                [Fact<LogicObj, 'input'>],
-                AndExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<boolean, boolean[], [Fact<LogicObj, 'input'>], AndExpr>>()
     })
 })
 
@@ -244,33 +201,12 @@ describe('or', () => {
         const fact = $fact(LogicObj, 'input')
 
         const x1 = $or(false, true, false)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (LiteralExpression<false, BooleanExpr> | LiteralExpression<true, BooleanExpr>)[],
-                never,
-                OrExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<boolean, boolean[], never, OrExpr>>()
 
         const x2 = $or($from(fact, '$.c'), true)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (From<LogicObj, boolean, Fact<LogicObj, 'input'>> | LiteralExpression<true, BooleanExpr>)[],
-                [Fact<LogicObj, 'input'>],
-                OrExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<boolean, boolean[], [Fact<LogicObj, 'input'>], OrExpr>>()
 
         const x3 = $or(true, $from(fact, '$.e'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                boolean,
-                (From<LogicObj, boolean, Fact<LogicObj, 'input'>> | LiteralExpression<true, BooleanExpr>)[],
-                [Fact<LogicObj, 'input'>],
-                OrExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<boolean, boolean[], [Fact<LogicObj, 'input'>], OrExpr>>()
     })
 })

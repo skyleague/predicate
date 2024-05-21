@@ -1,10 +1,10 @@
-import { $fact, $from, type Fact, type From } from './input.js'
+import { $fact, $from, type Fact } from './input.js'
 import { $add, $divide, $modulo, $multiply, $subtract } from './number.js'
 
 import { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { LiteralExpression, ValueExpression } from '../engine/types.js'
-import type { AddExpr, DivExpr, ModExpr, MulExpr, NumberExpr, SubExpr } from '../json/jsonexpr.type.js'
+import type { ValueExpression } from '../engine/types.js'
+import type { AddExpr, DivExpr, ModExpr, MulExpr, SubExpr } from '../json/jsonexpr.type.js'
 
 import { float, forAll, integer, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -87,29 +87,13 @@ describe('add', () => {
         const fact = $fact(Arithmetic, 'input')
 
         const x1 = $add(1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number, [LiteralExpression<1, NumberExpr>, LiteralExpression<2, NumberExpr>], never, AddExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [1, 2], never, AddExpr>>()
 
         const x2 = $add($from(fact, '$.a'), 2)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [From<Arithmetic, number, Fact<Arithmetic, 'input'>>, LiteralExpression<2, NumberExpr>],
-                [Fact<Arithmetic, 'input'>],
-                AddExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [number, 2], [Fact<Arithmetic, 'input'>], AddExpr>>()
 
         const x3 = $add(2, $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [LiteralExpression<2, NumberExpr>, From<Arithmetic, number, Fact<Arithmetic, 'input'>>],
-                [Fact<Arithmetic, 'input'>],
-                AddExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [2, number], [Fact<Arithmetic, 'input'>], AddExpr>>()
     })
 })
 
@@ -182,9 +166,7 @@ describe('subtract', () => {
             const subs = $policy({ x1 })
             const result = subs.evaluate()
 
-            expectTypeOf(x1).toEqualTypeOf<
-                ValueExpression<number, [LiteralExpression<number>, LiteralExpression<number>], never, SubExpr>
-            >()
+            expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [number, number], never, SubExpr>>()
             expect(result.output.x1).toEqual(a - b)
         })
     })
@@ -193,29 +175,13 @@ describe('subtract', () => {
         const fact = $fact(Arithmetic, 'input')
 
         const x1 = $subtract(1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number, [LiteralExpression<1, NumberExpr>, LiteralExpression<2, NumberExpr>], never, SubExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [1, 2], never, SubExpr>>()
 
         const x2 = $subtract($from(fact, '$.a'), 2)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [From<Arithmetic, number, Fact<Arithmetic, 'input'>>, LiteralExpression<2, NumberExpr>],
-                [Fact<Arithmetic, 'input'>],
-                SubExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [number, 2], [Fact<Arithmetic, 'input'>], SubExpr>>()
 
         const x3 = $subtract(2, $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [LiteralExpression<2, NumberExpr>, From<Arithmetic, number, Fact<Arithmetic, 'input'>>],
-                [Fact<Arithmetic, 'input'>],
-                SubExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [2, number], [Fact<Arithmetic, 'input'>], SubExpr>>()
     })
 })
 
@@ -295,29 +261,13 @@ describe('multiply', () => {
         const fact = $fact(Arithmetic, 'input')
 
         const x1 = $multiply(1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number, [LiteralExpression<1, NumberExpr>, LiteralExpression<2, NumberExpr>], never, MulExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [1, 2], never, MulExpr>>()
 
         const x2 = $multiply($from(fact, '$.a'), 2)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [From<Arithmetic, number, Fact<Arithmetic, 'input'>>, LiteralExpression<2, NumberExpr>],
-                [Fact<Arithmetic, 'input'>],
-                MulExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [number, 2], [Fact<Arithmetic, 'input'>], MulExpr>>()
 
         const x3 = $multiply(2, $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [LiteralExpression<2, NumberExpr>, From<Arithmetic, number, Fact<Arithmetic, 'input'>>],
-                [Fact<Arithmetic, 'input'>],
-                MulExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [2, number], [Fact<Arithmetic, 'input'>], MulExpr>>()
     })
 })
 describe('divide', () => {
@@ -396,29 +346,13 @@ describe('divide', () => {
         const fact = $fact(Arithmetic, 'input')
 
         const x1 = $divide(1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number, [LiteralExpression<1, NumberExpr>, LiteralExpression<2, NumberExpr>], never, DivExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [1, 2], never, DivExpr>>()
 
         const x2 = $divide($from(fact, '$.a'), 2)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [From<Arithmetic, number, Fact<Arithmetic, 'input'>>, LiteralExpression<2, NumberExpr>],
-                [Fact<Arithmetic, 'input'>],
-                DivExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [number, 2], [Fact<Arithmetic, 'input'>], DivExpr>>()
 
         const x3 = $divide(2, $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [LiteralExpression<2, NumberExpr>, From<Arithmetic, number, Fact<Arithmetic, 'input'>>],
-                [Fact<Arithmetic, 'input'>],
-                DivExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [2, number], [Fact<Arithmetic, 'input'>], DivExpr>>()
     })
 })
 
@@ -498,28 +432,12 @@ describe('mod', () => {
         const fact = $fact(Arithmetic, 'input')
 
         const x1 = $modulo(1, 2)
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<number, [LiteralExpression<1, NumberExpr>, LiteralExpression<2, NumberExpr>], never, ModExpr>
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [1, 2], never, ModExpr>>()
 
         const x2 = $modulo($from(fact, '$.a'), 2)
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [From<Arithmetic, number, Fact<Arithmetic, 'input'>>, LiteralExpression<2, NumberExpr>],
-                [Fact<Arithmetic, 'input'>],
-                ModExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [number, 2], [Fact<Arithmetic, 'input'>], ModExpr>>()
 
         const x3 = $modulo(2, $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                number,
-                [LiteralExpression<2, NumberExpr>, From<Arithmetic, number, Fact<Arithmetic, 'input'>>],
-                [Fact<Arithmetic, 'input'>],
-                ModExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [2, number], [Fact<Arithmetic, 'input'>], ModExpr>>()
     })
 })

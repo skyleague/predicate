@@ -1,10 +1,10 @@
-import { $fact, $from, type Fact, type From } from './input.js'
+import { $fact, $from, type Fact } from './input.js'
 import { $concat } from './string.js'
 
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
-import type { LiteralExpression, ValueExpression } from '../engine/types.js'
-import type { ConcatExpr, StringExpr } from '../json/jsonexpr.type.js'
+import type { ValueExpression } from '../engine/types.js'
+import type { ConcatExpr } from '../json/jsonexpr.type.js'
 
 import { array, forAll, string } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -88,48 +88,12 @@ describe('concat', () => {
         const fact = $fact(AbObj, 'input')
 
         const x1 = $concat('1', '2')
-        expectTypeOf(x1).toEqualTypeOf<
-            ValueExpression<
-                string,
-                [
-                    LiteralExpression<'1', StringExpr>,
-                    LiteralExpression<'2', StringExpr>,
-                    // these duplicates are not the nicest
-                    ...(LiteralExpression<'1', StringExpr> | LiteralExpression<'2', StringExpr>)[],
-                ],
-                never,
-                ConcatExpr
-            >
-        >()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<string, ['1', '2', ...('1' | '2')[]], never, ConcatExpr>>()
 
         const x2 = $concat($from(fact, '$.a'), '2')
-        expectTypeOf(x2).toEqualTypeOf<
-            ValueExpression<
-                string,
-                [
-                    From<AbObj, string, Fact<AbObj, 'input'>>,
-                    LiteralExpression<'2', StringExpr>,
-                    // these duplicates are not the nicest
-                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
-                ],
-                [Fact<AbObj, 'input'>],
-                ConcatExpr
-            >
-        >()
+        expectTypeOf(x2).toEqualTypeOf<ValueExpression<string, [string, '2', ...string[]], [Fact<AbObj, 'input'>], ConcatExpr>>()
 
         const x3 = $concat('2', $from(fact, '$.b'))
-        expectTypeOf(x3).toEqualTypeOf<
-            ValueExpression<
-                string,
-                [
-                    LiteralExpression<'2', StringExpr>,
-                    From<AbObj, string, Fact<AbObj, 'input'>>,
-                    // these duplicates are not the nicest
-                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
-                ],
-                [Fact<AbObj, 'input'>],
-                ConcatExpr
-            >
-        >()
+        expectTypeOf(x3).toEqualTypeOf<ValueExpression<string, ['2', string, ...string[]], [Fact<AbObj, 'input'>], ConcatExpr>>()
     })
 })
