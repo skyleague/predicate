@@ -1,5 +1,5 @@
 import { $all, $any, $endsWith, $equal, $includes, $startsWith } from './boolean.js'
-import { $fact, type Fact } from './input.js'
+import { $fact, $literal, type Fact } from './input.js'
 import { $from, type From } from './input.js'
 import { $modulo } from './number.js'
 
@@ -7,7 +7,15 @@ import { LogicObj } from '../../test/logic.type.js'
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
 import type { LiteralExpression, ValueExpression } from '../engine/types.js'
-import type { BooleanExpr, EndsWithExpr, IncludesExpr, NumberArrExpr, StartsWithExpr, StringExpr } from '../json/jsonexpr.type.js'
+import type {
+    BooleanExpr,
+    EndsWithExpr,
+    IncludesExpr,
+    NumberArrExpr,
+    StartsWithExpr,
+    StringArrExpr,
+    StringExpr,
+} from '../json/jsonexpr.type.js'
 
 import { array, float, forAll, string, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -594,6 +602,11 @@ describe('any', () => {
         const x3 = $any(ba, (x) => $equal(x, 1))
         expectTypeOf(x3).toEqualTypeOf<
             ValueExpression<boolean, [From<LogicObj, never[], Fact<LogicObj, 'input'>>], [Fact<LogicObj, 'input'>], BooleanExpr>
+        >()
+
+        const x4 = $any($literal(['foo']), (x) => $equal(x, a))
+        expectTypeOf(x4).toEqualTypeOf<
+            ValueExpression<boolean, [LiteralExpression<string[], StringArrExpr>], [Fact<LogicObj, 'input'>], BooleanExpr>
         >()
     })
 })

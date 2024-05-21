@@ -63,11 +63,11 @@ export interface FactExpression<T = any, Expr extends JSONExpr = InferExpression
 export interface InputExpression<
     O,
     I,
-    F extends Fact<Expression, string>,
+    F extends Fact<Expression, string>[],
     Expr extends JSONExpr | ValueItemExpr = InferExpressionType<O>,
 > extends Expression<O, I, Expr> {
-    dependsOn: [F]
-    facts: [F]
+    dependsOn: F
+    facts: F
     _type: 'value' | 'literal'
 }
 
