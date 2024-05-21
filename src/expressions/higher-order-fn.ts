@@ -1,3 +1,4 @@
+import type { FactsFomExprs } from '../engine/operator.js'
 import type { EvaluationContext } from '../engine/policy.js'
 import {
     type AsExpression,
@@ -16,7 +17,7 @@ import { JSONPath, type JSONPathValue } from '@skyleague/jsonpath'
 import { inspect } from 'node:util'
 
 // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
-export interface Value<O> extends InputExpression<O, any, [], ValueItemExpr> {
+export interface Value<O> extends InputExpression<O, any, never, ValueItemExpr> {
     _type: 'value'
 }
 function value<T, P extends string | undefined = undefined>(path?: P): P extends string ? Value<JSONPathValue<T, P>> : Value<T> {
@@ -62,7 +63,12 @@ export const $map = Object.assign(
     <O extends LiteralOr<any>, Expr extends LiteralOr<any[]>>(
         xs: Expr,
         transform: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => AsExpression<O>,
-    ): ValueExpression<ExpressionTypeOfLiteral<O>[], [AsExpression<Expr>], InferExpressionType<ExpressionTypeOfLiteral<O>>> => {
+    ): ValueExpression<
+        ExpressionTypeOfLiteral<O>[],
+        [AsExpression<Expr>],
+        FactsFomExprs<Expr>,
+        InferExpressionType<ExpressionTypeOfLiteral<O>>
+    > => {
         const _xs = fromLiteral(xs)
         const _value = $value<ExpressionTypeOfLiteral<Expr>>()
         const _transform = transform(_value)
@@ -77,7 +83,12 @@ export const $map = Object.assign(
             [inspect.custom]() {
                 return `$map(${_xs[inspect.custom]?.() ?? ''}, (x) => ${_transform[inspect.custom]?.() ?? ''})`
             },
-        } as ValueExpression<ExpressionTypeOfLiteral<O>[], [AsExpression<Expr>], InferExpressionType<ExpressionTypeOfLiteral<O>>>
+        } as ValueExpression<
+            ExpressionTypeOfLiteral<O>[],
+            [AsExpression<Expr>],
+            FactsFomExprs<Expr>,
+            InferExpressionType<ExpressionTypeOfLiteral<O>>
+        >
     },
     // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
     { operator: 'map', symbol: '$map', parse: (xs: any, transform: any) => $map(xs, () => transform) } as const,
@@ -91,6 +102,7 @@ export const $filter = Object.assign(
     ): ValueExpression<
         ExpressionTypeOfLiteral<Expr>,
         [AsExpression<Expr>],
+        FactsFomExprs<Expr>,
         InferExpressionType<ExpressionTypeOfLiteral<Expr>>
     > => {
         const _xs = fromLiteral(xs)
@@ -110,6 +122,7 @@ export const $filter = Object.assign(
         } as ValueExpression<
             ExpressionTypeOfLiteral<Expr>,
             [AsExpression<Expr>],
+            FactsFomExprs<Expr>,
             InferExpressionType<ExpressionTypeOfLiteral<Expr>>
         >
     },

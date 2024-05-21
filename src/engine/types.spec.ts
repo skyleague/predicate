@@ -23,10 +23,10 @@ describe('fromLiteral', () => {
         const fact = $fact(Arithmetic, 'input')
         const fa = fromLiteral($from(fact, '$.a'))
         const _fa_: Expression<number> = fa
-        expectTypeOf(fa).toEqualTypeOf<From<Arithmetic, number, [Fact<Arithmetic, 'input'>]>>()
+        expectTypeOf(fa).toEqualTypeOf<From<Arithmetic, number, Fact<Arithmetic, 'input'>>>()
         const fb = fromLiteral($from(fact, '$.b'))
         const _fb_: Expression<number> = fb
-        expectTypeOf(fb).toEqualTypeOf<From<Arithmetic, number, [Fact<Arithmetic, 'input'>]>>()
+        expectTypeOf(fb).toEqualTypeOf<From<Arithmetic, number, Fact<Arithmetic, 'input'>>>()
 
         type val = ['1', '2']
         const _test_multiple = {} as { [K in keyof val]: AsExpression<val[K]> }

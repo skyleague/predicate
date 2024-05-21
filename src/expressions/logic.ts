@@ -1,4 +1,4 @@
-import { operator } from '../engine/operator.js'
+import { type FactsFomExprs, operator } from '../engine/operator.js'
 import {
     type AsExpression,
     type Expression,
@@ -18,6 +18,7 @@ export const $if = Object.assign(
     ): ValueExpression<
         ExpressionTypeOfLiteral<UE> | ExpressionTypeOfLiteral<VE>,
         [AsExpression<CE>, AsExpression<UE>, AsExpression<VE>],
+        FactsFomExprs<CE | UE | VE>,
         IfExpr
     > => {
         const condition = fromLiteral(_condition)
@@ -29,6 +30,7 @@ export const $if = Object.assign(
             expr: (mod) => ({
                 if: [condition.expr(mod), a.expr(mod), b.expr(mod)],
             }),
+            facts: undefined as never,
         }
     },
     { operator: 'if', symbol: '$if' },

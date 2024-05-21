@@ -1,6 +1,7 @@
 import { collect, stack } from '@skyleague/axioms'
-import type { Simplify, UnionToIntersection } from '@skyleague/axioms/types'
+import type { IsEmptyObject, Simplify } from '@skyleague/axioms/types'
 import { version } from '../../package.json'
+import type { FactsFomExprs } from './operator.js'
 import type { Expression, ExpressionReturnType } from './types.js'
 
 export class EvaluationContext {
@@ -73,23 +74,18 @@ function* collapseExpression(root: Expression[], seen = new WeakSet()) {
 
 type InferFactName<Expr, k> = Expr extends { name: string } ? Expr['name'] : k
 
-type FilterFactExpressions<Facts extends Record<string, unknown>, k extends keyof Facts> = Facts[k] extends {
+type FilterFactExpressions<Facts, K extends keyof Facts> = Facts[K] extends {
     _type: 'fact'
 }
-    ? InferFactName<Facts[k], k>
+    ? InferFactName<Facts[K], K>
     : never
 
-type CollapseTreeToArray<T> = T extends { dependsOn: (infer U)[] } ? T | CollapseTreeToArray<U> : T
-type _InputFromExpressions<Facts extends Record<string, unknown>> = Simplify<{
-    [k in keyof Facts as FilterFactExpressions<Facts, k>]: ExpressionReturnType<Facts[k]>
+type _InputFromExpressions<Facts> = Simplify<{
+    [K in keyof Facts as FilterFactExpressions<Facts, K>]: ExpressionReturnType<Facts[K]>
 }>
-type NamedUnionToRecord<T> = T extends { name: infer Name } ? (Name extends PropertyKey ? { [k in Name]: T } : never) : never
-
+type _FactsFomExprs<Facts> = Facts extends unknown[] ? Facts[number] : Facts
 export type InputFromExpressions<Facts extends Record<string, unknown>> = Simplify<
-    _InputFromExpressions<Facts> &
-        _InputFromExpressions<
-            UnionToIntersection<NamedUnionToRecord<Facts extends Record<string, infer E> ? CollapseTreeToArray<E> : never>>
-        >
+    _InputFromExpressions<Facts> & _InputFromExpressions<{ [K in keyof Facts]: _FactsFomExprs<FactsFomExprs<Facts[K]>> }>
 >
 
 export type OutputFromFacts<Facts extends Record<string, unknown>> = Simplify<{
@@ -97,13 +93,12 @@ export type OutputFromFacts<Facts extends Record<string, unknown>> = Simplify<{
 }>
 
 export interface Policy<I, O> {
-    evaluate: [I] extends [never] ? () => { input: I; output: O } : (x: I) => { input: I; output: O }
+    evaluate: IsEmptyObject<I> extends true ? () => { input: I; output: O } : (x: I) => { input: I; output: O }
     expr: () => unknown
 }
 
 export function $policy<Facts extends Record<string, Expression>>(
     expressions: Facts,
-    // @ts-ignore
 ): Policy<InputFromExpressions<Facts>, OutputFromFacts<Facts>> {
     const facts = Object.entries(expressions).map(([name, e]) => {
         if (e.name === undefined) {
@@ -122,7 +117,6 @@ export function $policy<Facts extends Record<string, Expression>>(
     const properties = Object.fromEntries(inputNodes.map((e) => [e.name, e.expr('definition')]))
     const outputExpression = Object.fromEntries(outputNodes.map((f) => [f.name, f.expr('expression')]))
     return {
-        // @ts-ignore
         evaluate: ((input: Record<string, unknown>) => {
             const ctx = new EvaluationContext(input)
 

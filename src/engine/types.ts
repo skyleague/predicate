@@ -1,6 +1,6 @@
 import type { EvaluationContext } from './policy.js'
 
-import { $literal } from '../expressions/input.js'
+import { $literal, type Fact } from '../expressions/input.js'
 import type {
     BooleanArrExpr,
     BooleanExpr,
@@ -40,6 +40,7 @@ export interface Expression<O = any, I = any, Expr extends JSONExpr | ValueItemE
     _type?: string
     name?: PropertyKey
     dependsOn: Expression[]
+    // facts?: Expression[]
     fn: (x: I, ctx: EvaluationContext) => O
     expr: (definition: DefinitionType) => Expr
     [inspect.custom]?(): string
@@ -50,20 +51,23 @@ export type ExpressionReturnType<E> = E extends Pick<Expression, 'fn'> ? ReturnT
 // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
 export interface LiteralExpression<O = any, Expr extends JSONExpr = InferExpressionType<O>> extends Expression<O, any, Expr> {
     dependsOn: []
+    // facts: []
     _type: 'literal'
 }
 
-export interface FactExpression<T, Expr extends JSONExpr = InferExpressionType<T>> extends Expression<T, unknown, Expr> {
+// biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
+export interface FactExpression<T = any, Expr extends JSONExpr = InferExpressionType<T>> extends Expression<T, unknown, Expr> {
     _type: 'fact'
 }
 
 export interface InputExpression<
     O,
     I,
-    DependsOn extends Expression[],
+    F extends Fact<Expression, string>,
     Expr extends JSONExpr | ValueItemExpr = InferExpressionType<O>,
 > extends Expression<O, I, Expr> {
-    dependsOn: DependsOn
+    dependsOn: [F]
+    facts: [F]
     _type: 'value' | 'literal'
 }
 
@@ -71,9 +75,10 @@ export type InputFromExpressions<Expr extends Expression[]> = {
     [k in keyof Expr]: ExpressionReturnType<Expr[k]>
 }
 
-export interface ValueExpression<O, DependsOn extends Expression[], Expr extends JSONExpr = InferExpressionType<O>>
+export interface ValueExpression<O, DependsOn extends Expression[], Facts, Expr extends JSONExpr = InferExpressionType<O>>
     extends Expression<O, InputFromExpressions<DependsOn>, Expr> {
-    dependsOn: DependsOn
+    // dependsOn: DependsOn
+    facts: Facts //extends FactExpression ? [Facts] : never
     _type?: 'value'
 }
 

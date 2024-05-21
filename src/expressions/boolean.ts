@@ -1,6 +1,6 @@
 import { $value, type ValueItem } from './higher-order-fn.js'
 
-import { operator } from '../engine/operator.js'
+import { type FactsFomExprs, operator } from '../engine/operator.js'
 import {
     type AsExpression,
     type Expression,
@@ -44,7 +44,7 @@ export const $all = Object.assign(
     <Expr extends LiteralOr<any[]>>(
         xs: Expr,
         predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>,
-    ): ValueExpression<boolean, [AsExpression<Expr>]> => {
+    ): ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>> => {
         const _xs = fromLiteral(xs)
         const _value = $value<ExpressionTypeOfLiteral<Expr>>()
         const _transform = predicate(_value)
@@ -59,7 +59,7 @@ export const $all = Object.assign(
             [inspect.custom]() {
                 return `$all(${_xs[inspect.custom]?.() ?? ''}, (x) => ${_transform[inspect.custom]?.() ?? ''})`
             },
-        } as ValueExpression<boolean, [AsExpression<Expr>]>
+        } as ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>>
     },
     // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
     { operator: 'all', symbol: '$all', parse: (xs: any, predicate: any) => $all(xs, () => predicate) } as const,
@@ -70,7 +70,7 @@ export const $any = Object.assign(
     <Expr extends LiteralOr<any[]>>(
         xs: Expr,
         predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>,
-    ): ValueExpression<boolean, [AsExpression<Expr>]> => {
+    ): ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>> => {
         const _xs = fromLiteral(xs)
         const _value = $value<ExpressionTypeOfLiteral<Expr>>()
         const _transform = predicate(_value)
@@ -85,7 +85,7 @@ export const $any = Object.assign(
             [inspect.custom]() {
                 return `$any(${_xs[inspect.custom]?.() ?? ''}, (x) => ${_transform[inspect.custom]?.() ?? ''})`
             },
-        } as ValueExpression<boolean, [AsExpression<Expr>]>
+        } as ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>>
     },
     // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
     { operator: 'any', symbol: '$any', parse: (xs: any, predicate: any) => $any(xs, () => predicate) } as const,
