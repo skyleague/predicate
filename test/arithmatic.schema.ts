@@ -4,12 +4,12 @@ export const arithmetic = $validator(
     $object({
         a: $number,
         b: $number,
-    })
+    }),
 )
 
 export const mathFn = $validator(
     $object({
         a: $array($number),
         b: $array($ref(arithmetic)),
-    })
+    }),
 )

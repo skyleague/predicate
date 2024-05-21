@@ -5,12 +5,12 @@ import { $max, $min } from './number-array.js'
 import { MathFn } from '../../test/arithmatic.type.js'
 import type { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression } from '../engine/types.js'
+import type { LiteralExpression, ValueExpression } from '../engine/types.js'
 import type { MaxExpr, MinExpr, NumberArrExpr } from '../json/jsonexpr.type.js'
 
-import { forAll, float, array } from '@skyleague/axioms'
+import { array, float, forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
-import { describe, it, expect, expectTypeOf } from 'vitest'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 
 describe('min', () => {
     it('handles a simple schema case', () => {
@@ -99,15 +99,19 @@ describe('min', () => {
         const fact = $fact(MathFn, 'input')
 
         const x1 = $min([1, 2])
-        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [LiteralExpression<number[], NumberArrExpr>], MinExpr>>()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [LiteralExpression<number[], NumberArrExpr>], never, MinExpr>>()
 
         const a = $from(fact, '$.a')
         const x2 = $min(a)
-        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [From<MathFn, number[], [Fact<MathFn, 'input'>]>], MinExpr>>()
+        expectTypeOf(x2).toEqualTypeOf<
+            ValueExpression<number, [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], MinExpr>
+        >()
 
         const b = $from(fact, '$.b..a')
         const x3 = $min(b)
-        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [From<MathFn, number[], [Fact<MathFn, 'input'>]>], MinExpr>>()
+        expectTypeOf(x3).toEqualTypeOf<
+            ValueExpression<number, [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], MinExpr>
+        >()
     })
 })
 
@@ -198,14 +202,18 @@ describe('max', () => {
         const fact = $fact(MathFn, 'input')
 
         const x1 = $max([1, 2])
-        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [LiteralExpression<number[], NumberArrExpr>], MaxExpr>>()
+        expectTypeOf(x1).toEqualTypeOf<ValueExpression<number, [LiteralExpression<number[], NumberArrExpr>], never, MaxExpr>>()
 
         const a = $from(fact, '$.a')
         const x2 = $max(a)
-        expectTypeOf(x2).toEqualTypeOf<ValueExpression<number, [From<MathFn, number[], [Fact<MathFn, 'input'>]>], MaxExpr>>()
+        expectTypeOf(x2).toEqualTypeOf<
+            ValueExpression<number, [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], MaxExpr>
+        >()
 
         const b = $from(fact, '$.b..a')
         const x3 = $max(b)
-        expectTypeOf(x3).toEqualTypeOf<ValueExpression<number, [From<MathFn, number[], [Fact<MathFn, 'input'>]>], MaxExpr>>()
+        expectTypeOf(x3).toEqualTypeOf<
+            ValueExpression<number, [From<MathFn, number[], Fact<MathFn, 'input'>>], [Fact<MathFn, 'input'>], MaxExpr>
+        >()
     })
 })

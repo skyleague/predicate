@@ -6,5 +6,5 @@ export const person = $validator(
         lastName: $string,
         birthDate: $string,
         age: $number,
-    })
+    }),
 )

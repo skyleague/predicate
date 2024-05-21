@@ -1,12 +1,12 @@
-import { type ValueItem, $value } from './higher-order-fn.js'
+import { $value, type ValueItem } from './higher-order-fn.js'
 
-import { operator } from '../engine/operator.js'
+import { type FactsFomExprs, operator } from '../engine/operator.js'
 import {
-    type LiteralOr,
-    type ExpressionTypeOfLiteral,
-    type Expression,
-    type ValueExpression,
     type AsExpression,
+    type Expression,
+    type ExpressionTypeOfLiteral,
+    type LiteralOr,
+    type ValueExpression,
     fromLiteral,
 } from '../engine/types.js'
 
@@ -40,10 +40,11 @@ export const $lt = operator({ operator: '<', symbol: '$lt', fn: ([a, b]: [number
 export const $lte = operator({ operator: '<=', symbol: '$lte', fn: ([a, b]: [number, number]) => a <= b })
 
 export const $all = Object.assign(
-    function <Expr extends LiteralOr<any[]>>(
+    // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
+    <Expr extends LiteralOr<any[]>>(
         xs: Expr,
-        predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>
-    ): ValueExpression<boolean, [AsExpression<Expr>]> {
+        predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>,
+    ): ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>> => {
         const _xs = fromLiteral(xs)
         const _value = $value<ExpressionTypeOfLiteral<Expr>>()
         const _transform = predicate(_value)
@@ -58,17 +59,18 @@ export const $all = Object.assign(
             [inspect.custom]() {
                 return `$all(${_xs[inspect.custom]?.() ?? ''}, (x) => ${_transform[inspect.custom]?.() ?? ''})`
             },
-        } as ValueExpression<boolean, [AsExpression<Expr>]>
+        } as ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>>
     },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    { operator: 'all', symbol: '$all', parse: (xs: any, predicate: any) => $all(xs, () => predicate) } as const
+    // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
+    { operator: 'all', symbol: '$all', parse: (xs: any, predicate: any) => $all(xs, () => predicate) } as const,
 )
 
 export const $any = Object.assign(
-    function <Expr extends LiteralOr<any[]>>(
+    // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
+    <Expr extends LiteralOr<any[]>>(
         xs: Expr,
-        predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>
-    ): ValueExpression<boolean, [AsExpression<Expr>]> {
+        predicate: (value: ValueItem<ExpressionTypeOfLiteral<Expr>>) => Expression<boolean>,
+    ): ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>> => {
         const _xs = fromLiteral(xs)
         const _value = $value<ExpressionTypeOfLiteral<Expr>>()
         const _transform = predicate(_value)
@@ -83,8 +85,8 @@ export const $any = Object.assign(
             [inspect.custom]() {
                 return `$any(${_xs[inspect.custom]?.() ?? ''}, (x) => ${_transform[inspect.custom]?.() ?? ''})`
             },
-        } as ValueExpression<boolean, [AsExpression<Expr>]>
+        } as ValueExpression<boolean, [AsExpression<Expr>], FactsFomExprs<Expr>>
     },
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    { operator: 'any', symbol: '$any', parse: (xs: any, predicate: any) => $any(xs, () => predicate) } as const
+    // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
+    { operator: 'any', symbol: '$any', parse: (xs: any, predicate: any) => $any(xs, () => predicate) } as const,
 )

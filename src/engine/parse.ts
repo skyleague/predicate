@@ -8,6 +8,7 @@ import { JSONExprDefinition } from '../json/jsonexpr.type.js'
 import type { FromExpr, JSONExpr, ValueItemExpr } from '../json/jsonexpr.type.js'
 
 import { isDefined, keysOf } from '@skyleague/axioms'
+import type { Schema } from '@skyleague/therefore'
 
 const builtin = (() => {
     const ops: Record<string, unknown> = {}
@@ -22,12 +23,13 @@ const builtin = (() => {
 export function parseJSONExpression(definition: JSONExprDefinition | unknown) {
     if (JSONExprDefinition.is(definition)) {
         const inputs = {}
-        return $policy<any>(
+        return $policy(
             Object.fromEntries(
                 Object.entries(definition.output)
                     .filter(([_, v]) => isDefined(v))
-                    .map(([k, v]) => [k, parseExpr({ definition, expr: v!, inputs, operators: builtin })])
-            )
+                    // biome-ignore lint/style/noNonNullAssertion: we filtered out undefined values
+                    .map(([k, v]) => [k, parseExpr({ definition, expr: v!, inputs, operators: builtin })]),
+            ),
         )
     }
     return undefined
@@ -53,20 +55,20 @@ export function parseExpr({
     const op = keysOf(expr)[0]
     if (op === 'value') {
         return $value()
-    } else if (op === 'from') {
+    }
+    if (op === 'from') {
         const _expr = expr as FromExpr
         if (inputs[_expr.from[0]] === undefined) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-            inputs[_expr.from[0]] = $fact({ schema: definition.input?.[_expr.from[0]] } as any, _expr.from[0])
+            inputs[_expr.from[0]] = $fact({ schema: definition.input?.[_expr.from[0]] } as Schema<unknown>, _expr.from[0])
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-        return $from(inputs[_expr.from[0]] as any, _expr.from[1])
-    } else if (op !== undefined && operators[op] !== undefined) {
+        return $from(inputs[_expr.from[0]] as Fact<unknown, string>, _expr.from[1])
+    }
+    if (op !== undefined && operators[op] !== undefined) {
         const _expr = expr as Record<string, JSONExpr[]>
         const _op = operators[op]
         const _args = _expr[op]?.map((x) => parseExpr({ definition, expr: x, inputs, operators })) ?? []
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+        // biome-ignore lint/suspicious/noExplicitAny: any is necessary for the operator function
         return ((_op as any | undefined)?.parse ?? _op)(..._args)
     }
     throw new Error('Not implemented')

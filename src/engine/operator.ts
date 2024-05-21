@@ -1,20 +1,26 @@
-import type { Expression, ValueExpression, AsExpression, DefinitionType } from './types.js'
+import { inspect } from 'node:util'
+import type { JSONExpr } from '../json/jsonexpr.type.js'
+import type { AsExpression, DefinitionType, Expression, ValueExpression } from './types.js'
 import { fromLiteral } from './types.js'
 
-import type { JSONExpr } from '../json/jsonexpr.type.js'
+export type FactsFomExprs<T> = T extends { facts: infer U } ? U : never
 
-import { inspect } from 'node:util'
-
+// biome-ignore lint/suspicious/noExplicitAny: any is necessary for the operator function
 export interface Operator<I extends any[], O, Op extends string> {
     symbol: string
     operator: Op
     <Exprs extends { [K in keyof I]: Expression<I[K]> | I[K] }>(
         ...exprs: Exprs
-    ): ValueExpression<O, { [K in keyof I]: AsExpression<Exprs[K]> }, Extract<JSONExpr, Record<Op, any[] | JSONExpr>>>
+    ): ValueExpression<
+        O,
+        { [K in keyof I]: AsExpression<Exprs[K]> },
+        FactsFomExprs<Exprs[number]>,
+        // biome-ignore lint/suspicious/noExplicitAny: any is necessary for the operator function
+        Extract<JSONExpr, Record<Op, any[] | JSONExpr>>
+    >
 }
 
 export function operator<I extends unknown[], O, Op extends string = string>({
-    // eslint-disable-next-line @typescript-eslint/no-shadow
     operator,
     fn,
     symbol,
@@ -24,9 +30,7 @@ export function operator<I extends unknown[], O, Op extends string = string>({
     symbol: string
 }): Operator<I, O, Op> {
     return Object.assign(
-        <Exprs extends { [K in keyof I]: Expression<I[K]> | I[K] }>(
-            ...exprs: Exprs
-        ): ValueExpression<O, { [K in keyof I]: AsExpression<Exprs[K]> }, Extract<JSONExpr, Record<Op, any[] | JSONExpr>>> => {
+        <Exprs extends { [K in keyof I]: Expression<I[K]> | I[K] }>(...exprs: Exprs) => {
             const xs = exprs.map((x) => fromLiteral(x as I[number]))
             return {
                 fn,
@@ -37,15 +41,11 @@ export function operator<I extends unknown[], O, Op extends string = string>({
                 [inspect.custom]() {
                     return `${symbol}(${xs.map((x) => x[inspect.custom]?.() ?? '').join(', ')})`
                 },
-            } as unknown as ValueExpression<
-                O,
-                { [K in keyof I]: AsExpression<Exprs[K]> },
-                Extract<JSONExpr, Record<Op, any[] | JSONExpr>>
-            >
+            }
         },
         {
             symbol,
             operator,
-        }
-    )
+        },
+    ) as unknown as Operator<I, O, Op>
 }

@@ -3,8 +3,8 @@ import { $concat } from './string.js'
 
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
-import type { ValueExpression, LiteralExpression } from '../engine/types.js'
-import type { ConcatExpr, JSONExpr, StringExpr } from '../json/jsonexpr.type.js'
+import type { LiteralExpression, ValueExpression } from '../engine/types.js'
+import type { ConcatExpr, StringExpr } from '../json/jsonexpr.type.js'
 
 import { array, forAll, string } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
@@ -94,8 +94,10 @@ describe('concat', () => {
                 [
                     LiteralExpression<'1', StringExpr>,
                     LiteralExpression<'2', StringExpr>,
-                    ...LiteralExpression<undefined, JSONExpr>[],
+                    // these duplicates are not the nicest
+                    ...(LiteralExpression<'1', StringExpr> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                never,
                 ConcatExpr
             >
         >()
@@ -105,10 +107,12 @@ describe('concat', () => {
             ValueExpression<
                 string,
                 [
-                    From<AbObj, string, [Fact<AbObj, 'input'>]>,
+                    From<AbObj, string, Fact<AbObj, 'input'>>,
                     LiteralExpression<'2', StringExpr>,
-                    ...LiteralExpression<undefined, JSONExpr>[],
+                    // these duplicates are not the nicest
+                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                [Fact<AbObj, 'input'>],
                 ConcatExpr
             >
         >()
@@ -119,9 +123,11 @@ describe('concat', () => {
                 string,
                 [
                     LiteralExpression<'2', StringExpr>,
-                    From<AbObj, string, [Fact<AbObj, 'input'>]>,
-                    ...LiteralExpression<undefined, JSONExpr>[],
+                    From<AbObj, string, Fact<AbObj, 'input'>>,
+                    // these duplicates are not the nicest
+                    ...(From<AbObj, string, Fact<AbObj, 'input'>> | LiteralExpression<'2', StringExpr>)[],
                 ],
+                [Fact<AbObj, 'input'>],
                 ConcatExpr
             >
         >()
