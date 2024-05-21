@@ -1,10 +1,9 @@
 import { expectTypeOf, it } from 'vitest'
 import { LogicObj } from '../../test/logic.type.js'
 import { AbObj } from '../../test/string.type.js'
-import { $any, $equal } from '../expressions/boolean.js'
+import { $any, $equal, $startsWith } from '../expressions/boolean.js'
 import { $fact, $from, type Fact } from '../expressions/input.js'
-import { $concat } from '../expressions/string.js'
-import type { BooleanExpr, ConcatExpr } from '../json/jsonexpr.type.js'
+import type { BooleanExpr, StartsWithExpr } from '../json/jsonexpr.type.js'
 import { $policy, type Policy } from './policy.js'
 import type { ValueExpression } from './types.js'
 
@@ -28,10 +27,14 @@ it('handles the types', () => {
     >()
 
     const fact2 = $fact(AbObj, 'input2')
-    const x2 = $concat($from(fact2, '$.a'), '2')
-    expectTypeOf(x2).toEqualTypeOf<ValueExpression<string, [string, '2', ...string[]], [Fact<AbObj, 'input2'>], ConcatExpr>>()
+    const x2 = $startsWith($from(fact2, '$.a'), '2')
+    expectTypeOf(x2).toEqualTypeOf<
+        ValueExpression<boolean, [str: string, searchString: '2'], [Fact<AbObj, 'input2'>], StartsWithExpr>
+    >()
 
-    const policy = $policy({ x, x2 })
+    const x3 = $equal(x, x2)
+
+    const policy = $policy({ x, x2, x3 })
 
     expectTypeOf(policy).toEqualTypeOf<
         Policy<
@@ -41,7 +44,8 @@ it('handles the types', () => {
             },
             {
                 x: boolean
-                x2: string
+                x2: boolean
+                x3: boolean
             }
         >
     >()

@@ -1,11 +1,10 @@
-import { valueExpression } from './arbitraries.js'
-
 import { parseJSONExpression } from '../src/engine/parse.js'
 import { $policy, type Policy } from '../src/engine/policy.js'
 import type { ValueExpression } from '../src/engine/types.js'
 import { $startsWith } from '../src/expressions/boolean.js'
 import { $map } from '../src/expressions/higher-order-fn.js'
 import { type BooleanExpr, JSONExprDefinition } from '../src/json/jsonexpr.type.js'
+import { valueExpression } from './arbitraries.js'
 
 import { forAll } from '@skyleague/axioms'
 import { describe, expect, it } from 'vitest'
