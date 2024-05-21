@@ -28,7 +28,7 @@ export function $fact<T, Name extends string>(schema: Pick<Schema<T>, 'schema' |
         },
     }
 }
-export interface From<I, O, F extends Fact> extends InputExpression<O, I, F, FromExpr> {
+export interface From<I, O, F extends Fact> extends InputExpression<O, I, [F], FromExpr> {
     _type: 'value'
 }
 
