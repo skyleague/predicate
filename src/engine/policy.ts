@@ -73,21 +73,26 @@ function* collapseExpression(root: Expression[], seen = new WeakSet()) {
         }
     }
 }
-
 type InferFactName<Expr, k> = Expr extends { name: string } ? Expr['name'] : k
 
-type FilterFactExpressions<Facts, K extends keyof Facts> = Facts[K] extends {
+type FilterFactExpressions<Facts, K extends keyof Facts = keyof Facts> = Facts[K] extends {
     _type: 'fact'
 }
     ? InferFactName<Facts[K], K>
     : never
 
-type _InputFromExpressions<Facts> = Simplify<{
-    [K in keyof Facts as FilterFactExpressions<Facts, K>]: ExpressionReturnType<Facts[K]>
-}>
+type _InputFromName<Names extends PropertyKey, Facts> = {
+    [K in Names]: ExpressionReturnType<Extract<Facts[keyof Facts], { name: K }>>
+}
+type _InputFromExpressions<Facts> = _InputFromName<
+    FilterFactExpressions<Facts> extends PropertyKey ? FilterFactExpressions<Facts> : never,
+    Facts
+>
+
 type _FactsFomExprs<Facts> = Facts extends unknown[] ? Facts[number] : Facts
 export type InputFromExpressions<Facts extends Record<string, unknown>> = Simplify<
-    _InputFromExpressions<Facts> & _InputFromExpressions<{ [K in keyof Facts]: _FactsFomExprs<FactsFomExprs<Facts[K]>> }>
+    _InputFromExpressions<{ [K in keyof Facts as FilterFactExpressions<Facts, K>]: Facts[K] }> &
+        _InputFromExpressions<{ [K in keyof Facts]: _FactsFomExprs<FactsFomExprs<Facts[K]>> }>
 >
 
 export type OutputFromFacts<Facts extends Record<string, unknown>> = Simplify<{
