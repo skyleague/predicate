@@ -1,4 +1,4 @@
-import { collect, stack } from '@skyleague/axioms'
+import { stack } from '@skyleague/axioms'
 import type { IsEmptyObject, Simplify } from '@skyleague/axioms/types'
 import packageJSON from '../../package.json' with { type: 'json' }
 import type { FactsFomExprs } from './operator.js'
@@ -114,7 +114,7 @@ export function $policy<Facts extends Record<string, Expression>>(
         return e
     })
 
-    const allNodes = collect(collapseExpression(facts))
+    const allNodes = collapseExpression(facts).toArray()
     const inputNodes = allNodes.filter(
         (f: (typeof allNodes)[number]): f is (typeof allNodes)[number] & { name: string } =>
             f._type === 'fact' && f.name !== undefined,
