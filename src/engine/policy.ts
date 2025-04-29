@@ -121,8 +121,9 @@ export function $policy<Facts extends Record<string, Expression>>(
     )
     const outputNodes = allNodes.filter((f) => f._type !== 'fact' && f.name !== undefined)
 
-    const properties = Object.fromEntries(inputNodes.map((e) => [e.name, e.expr('definition')]))
-    const outputExpression = Object.fromEntries(outputNodes.map((f) => [f.name, f.expr('expression')]))
+    let cachedProperties: Record<string, unknown> | undefined
+    let cachedOutputExpression: Record<string, unknown> | undefined
+
     return {
         evaluate: ((input: Record<string, unknown>) => {
             const ctx = new EvaluationContext(input)
@@ -137,13 +138,19 @@ export function $policy<Facts extends Record<string, Expression>>(
             return { input: input, output: ctx.state }
         }) as Policy<InputFromExpressions<Facts>, OutputFromFacts<Facts>>['evaluate'],
         expr: () => {
-            const input = properties
+            if (cachedProperties === undefined) {
+                cachedProperties = Object.fromEntries(inputNodes.map((e) => [e.name, e.expr('definition')]))
+            }
+            if (cachedOutputExpression === undefined) {
+                cachedOutputExpression = Object.fromEntries(outputNodes.map((f) => [f.name, f.expr('expression')]))
+            }
+
             return {
                 meta: {
                     version,
                 },
-                input,
-                output: outputExpression,
+                input: cachedProperties,
+                output: cachedOutputExpression,
             }
         },
     }

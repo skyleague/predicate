@@ -8,6 +8,7 @@ import { $policy } from '../engine/policy.js'
 import { forAll, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
 import { describe, expect, it } from 'vitest'
+import { z } from 'zod'
 
 describe('fact', () => {
     it('simple single one is used as input', () => {
@@ -18,41 +19,60 @@ describe('fact', () => {
         })
 
         expect(policy.expr()).toMatchInlineSnapshot(`
-          {
-            "input": {
-              "person": {
-                "$schema": "http://json-schema.org/draft-07/schema#",
-                "additionalProperties": true,
-                "properties": {
-                  "age": {
-                    "type": "number",
-                  },
-                  "birthDate": {
-                    "type": "string",
-                  },
-                  "firstName": {
-                    "type": "string",
-                  },
-                  "lastName": {
-                    "type": "string",
-                  },
+        {
+          "input": {
+            "person": {
+              "$schema": "http://json-schema.org/draft-07/schema#",
+              "additionalProperties": true,
+              "properties": {
+                "age": {
+                  "type": "number",
                 },
-                "required": [
-                  "firstName",
-                  "lastName",
-                  "birthDate",
-                  "age",
-                ],
-                "title": "Person",
-                "type": "object",
+                "birthDate": {
+                  "type": "string",
+                },
+                "firstName": {
+                  "type": "string",
+                },
+                "lastName": {
+                  "type": "string",
+                },
               },
+              "required": [
+                "firstName",
+                "lastName",
+                "birthDate",
+                "age",
+              ],
+              "title": "Person",
+              "type": "object",
             },
-            "meta": {
-              "version": "1.0.0",
-            },
-            "output": {},
-          }
-        `)
+          },
+          "meta": {
+            "version": "1.0.0",
+          },
+          "output": {},
+        }
+      `)
+    })
+
+    it('simple single one is used as input - zod', () => {
+        const zodPerson = z.object({
+            firstName: z.string(),
+            lastName: z.string(),
+            birthDate: z.string(),
+            age: z.number(),
+        })
+        zodPerson.safeParse
+        const person = $fact(zodPerson, 'person')
+        const policy = $policy({ person })
+        forAll(arbitrary(Person), (p) => {
+            expect(policy.evaluate({ person: p }).input.person).toEqual(p)
+        })
+
+        expect(() => policy.expr()).toThrowErrorMatchingInlineSnapshot(
+            '[Error: Cannot infer definition for fact with zod schema]',
+        )
     })
 
     it('simple multiple is used as input', () => {

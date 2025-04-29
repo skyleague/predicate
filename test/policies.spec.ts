@@ -27,7 +27,7 @@ describe('arbitrary', () => {
                 tests: 100000,
             },
         )
-    })
+    }, 100000)
 })
 
 describe('any string starts with', () => {

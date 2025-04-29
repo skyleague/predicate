@@ -6,7 +6,7 @@
   "types": "./.dist/index.d.ts",
   "sideEffects": false,
   "node-standards": {
-    "extends": ["library", "docusaurus"]
+    "extends": ["library"]
   },
   "engines": {
     "node": ">=22"
@@ -19,7 +19,6 @@
   "files": [".dist", "package.json"],
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
-    "build:docs": "npm run --prefix=docs build",
     "check:coverage": "vitest run --coverage=true",
     "check:project": "node-standards lint",
     "check:types": "tsc -p tsconfig.json",
@@ -37,7 +36,8 @@
     "@skyleague/node-standards": "^11.0.1",
     "@skyleague/therefore": "^7.15.1",
     "typescript": "^5.8.3",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.24.3"
   },
   "publishConfig": {
     "access": "public",
@@ -49,6 +49,5 @@
     ".": "./.dist/index.js",
     "./package.json": "./package.json",
     "./*.js": "./.dist/*.js"
-  },
-  "workspaces": ["docs"]
+  }
 }
