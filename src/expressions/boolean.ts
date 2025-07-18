@@ -1,19 +1,16 @@
-import { $value, type ValueItem } from './higher-order-fn.js'
-
+import { inspect } from 'node:util'
+import { equal } from '@skyleague/axioms'
 import { type FactsFomExprs, operator } from '../engine/operator.js'
 import {
     type AsExpression,
     type Expression,
     type ExpressionTypeOfLiteral,
+    fromLiteral,
     type InputFromExpressions,
     type LiteralOr,
     type ValueExpression,
-    fromLiteral,
 } from '../engine/types.js'
-
-import { equal } from '@skyleague/axioms'
-
-import { inspect } from 'node:util'
+import { $value, type ValueItem } from './higher-order-fn.js'
 
 export const $startsWith = operator({
     operator: 'startsWith',

@@ -1,11 +1,9 @@
-import { type AsExpression, type Expression, type LiteralExpression, fromLiteral } from './types.js'
+import { describe, expectTypeOf, it } from 'vitest'
 
 import { Arithmetic } from '../../test/arithmatic.type.js'
-import { $fact, type Fact } from '../expressions/input.js'
-import { $from, type From } from '../expressions/input.js'
+import { $fact, $from, type Fact, type From } from '../expressions/input.js'
 import type { BooleanExpr, NumberArrExpr, NumberExpr, StringExpr } from '../json/jsonexpr.type.js'
-
-import { describe, expectTypeOf, it } from 'vitest'
+import { type AsExpression, type Expression, fromLiteral, type LiteralExpression } from './types.js'
 
 describe('fromLiteral', () => {
     it('types are compabile', () => {

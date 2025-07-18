@@ -1,14 +1,12 @@
-import { $fact, $from, type Fact } from './input.js'
-import { $concat } from './string.js'
-
+import { array, forAll, string } from '@skyleague/axioms'
+import { arbitrary } from '@skyleague/therefore'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
 import type { ValueExpression } from '../engine/types.js'
 import type { ConcatExpr } from '../json/jsonexpr.type.js'
-
-import { array, forAll, string } from '@skyleague/axioms'
-import { arbitrary } from '@skyleague/therefore'
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { $fact, $from, type Fact } from './input.js'
+import { $concat } from './string.js'
 
 describe('concat', () => {
     it('handles a simple schema case', () => {

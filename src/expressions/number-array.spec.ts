@@ -1,16 +1,13 @@
-import { $fact, type Fact } from './input.js'
-import { $from } from './input.js'
-import { $max, $min } from './number-array.js'
-
-import { MathFn } from '../../test/arithmatic.type.js'
-import type { Arithmetic } from '../../test/arithmatic.type.js'
-import { $policy } from '../engine/policy.js'
-import type { ValueExpression } from '../engine/types.js'
-import type { MaxExpr, MinExpr } from '../json/jsonexpr.type.js'
-
 import { array, float, forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
 import { describe, expect, expectTypeOf, it } from 'vitest'
+import type { Arithmetic } from '../../test/arithmatic.type.js'
+import { MathFn } from '../../test/arithmatic.type.js'
+import { $policy } from '../engine/policy.js'
+import type { ValueExpression } from '../engine/types.js'
+import type { MaxExpr, MinExpr } from '../json/jsonexpr.type.js'
+import { $fact, $from, type Fact } from './input.js'
+import { $max, $min } from './number-array.js'
 
 describe('min', () => {
     it('handles a simple schema case', () => {

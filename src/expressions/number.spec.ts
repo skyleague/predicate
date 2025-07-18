@@ -1,14 +1,12 @@
-import { $fact, $from, type Fact } from './input.js'
-import { $add, $divide, $modulo, $multiply, $subtract } from './number.js'
-
+import { float, forAll, integer, tuple } from '@skyleague/axioms'
+import { arbitrary } from '@skyleague/therefore'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { Arithmetic } from '../../test/arithmatic.type.js'
 import { $policy } from '../engine/policy.js'
 import type { ValueExpression } from '../engine/types.js'
 import type { AddExpr, DivExpr, ModExpr, MulExpr, SubExpr } from '../json/jsonexpr.type.js'
-
-import { float, forAll, integer, tuple } from '@skyleague/axioms'
-import { arbitrary } from '@skyleague/therefore'
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { $fact, $from, type Fact } from './input.js'
+import { $add, $divide, $modulo, $multiply, $subtract } from './number.js'
 
 describe('add', () => {
     it('handles a simple schema case', () => {

@@ -1,17 +1,14 @@
-import { $all, $any, $endsWith, $equal, $includes, $startsWith } from './boolean.js'
-import { $fact, $literal, type Fact } from './input.js'
-import { $from } from './input.js'
-import { $modulo } from './number.js'
-
+import { array, float, forAll, string, tuple } from '@skyleague/axioms'
+import { arbitrary } from '@skyleague/therefore'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { LogicObj } from '../../test/logic.type.js'
 import { AbObj } from '../../test/string.type.js'
 import { $policy } from '../engine/policy.js'
 import type { ValueExpression } from '../engine/types.js'
 import type { BooleanExpr, EndsWithExpr, IncludesExpr, StartsWithExpr } from '../json/jsonexpr.type.js'
-
-import { array, float, forAll, string, tuple } from '@skyleague/axioms'
-import { arbitrary } from '@skyleague/therefore'
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { $all, $any, $endsWith, $equal, $includes, $startsWith } from './boolean.js'
+import { $fact, $from, $literal, type Fact } from './input.js'
+import { $modulo } from './number.js'
 
 describe('startsWith', () => {
     it('handles a simple schema case', () => {

@@ -1,14 +1,13 @@
+import { array, boolean, type Dependent, dependentArbitrary, equal, float, oneOf, sha256, string, tuple } from '@skyleague/axioms'
 import type { Schema } from '@skyleague/therefore'
+import { v4 as uuidv4 } from 'uuid'
 import { $all, $any, $endsWith, $equal, $gt, $gte, $includes, $lt, $lte, $not, $startsWith } from '../src/expressions/boolean.js'
 import { $filter, $map } from '../src/expressions/higher-order-fn.js'
 import { $fact, $from, $literal } from '../src/expressions/input.js'
 import { $and, $or } from '../src/expressions/logic.js'
-import { $max, $min } from '../src/expressions/number-array.js'
 import { $add, $divide, $modulo, $multiply, $subtract } from '../src/expressions/number.js'
+import { $max, $min } from '../src/expressions/number-array.js'
 import { $concat } from '../src/expressions/string.js'
-
-import { type Dependent, array, boolean, dependentArbitrary, equal, float, oneOf, sha256, string, tuple } from '@skyleague/axioms'
-import { v4 as uuidv4 } from 'uuid'
 
 const asArbitrary = <T>(arb: () => Dependent<T>) => dependentArbitrary((ctx) => arb().value(ctx))
 

@@ -1,14 +1,13 @@
-import { $policy } from './policy.js'
-import type { Expression } from './types.js'
+import { isDefined, keysOf } from '@skyleague/axioms'
+import type { Schema } from '@skyleague/therefore'
 
 import { $value } from '../expressions/higher-order-fn.js'
 import * as expressions from '../expressions/index.js'
 import { $fact, $from, $literal, type Fact } from '../expressions/input.js'
-import { JSONExprDefinition } from '../json/jsonexpr.type.js'
 import type { FromExpr, JSONExpr, ValueItemExpr } from '../json/jsonexpr.type.js'
-
-import { isDefined, keysOf } from '@skyleague/axioms'
-import type { Schema } from '@skyleague/therefore'
+import { JSONExprDefinition } from '../json/jsonexpr.type.js'
+import { $policy } from './policy.js'
+import type { Expression } from './types.js'
 
 const builtin = (() => {
     const ops: Record<string, unknown> = {}

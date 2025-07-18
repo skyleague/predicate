@@ -6,7 +6,9 @@
   "types": "./.dist/index.d.ts",
   "sideEffects": false,
   "node-standards": {
-    "extends": ["library"]
+    "extends": [
+      "library"
+    ]
   },
   "engines": {
     "node": ">=22"
@@ -16,7 +18,10 @@
     "type": "git",
     "url": "https://github.com/skyleague/predicate.git"
   },
-  "files": [".dist", "package.json"],
+  "files": [
+    ".dist",
+    "package.json"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
     "check:coverage": "vitest run --coverage=true",
@@ -33,11 +38,11 @@
     "@skyleague/jsonpath": "^4.0.1"
   },
   "devDependencies": {
-    "@skyleague/node-standards": "^11.0.1",
-    "@skyleague/therefore": "^7.15.1",
+    "@skyleague/node-standards": "^12.1.3",
+    "@skyleague/therefore": "^8.1.2",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "zod": "^3.24.3"
+    "zod": "^4.0.8"
   },
   "publishConfig": {
     "access": "public",

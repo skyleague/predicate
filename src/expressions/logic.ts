@@ -3,10 +3,10 @@ import {
     type AsExpression,
     type Expression,
     type ExpressionTypeOfLiteral,
+    fromLiteral,
     type InputFromExpressions,
     type LiteralOr,
     type ValueExpression,
-    fromLiteral,
 } from '../engine/types.js'
 import type { IfExpr } from '../json/jsonexpr.type.js'
 
