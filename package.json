@@ -19,7 +19,7 @@
   "files": [".dist", "package.json"],
   "scripts": {
     "build": "tsc -p tsconfig.dist.json",
-    "build:docs": "npm run --workspace=docs build",
+    "build:docs": "npm run --prefix=docs build",
     "check:coverage": "vitest run --coverage=true",
     "check:project": "node-standards lint",
     "check:types": "tsc -p tsconfig.json",
@@ -30,14 +30,14 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@skyleague/axioms": "^6.1.0",
-    "@skyleague/jsonpath": "^4.0.0"
+    "@skyleague/axioms": "^6.5.1",
+    "@skyleague/jsonpath": "^4.0.1"
   },
   "devDependencies": {
-    "@skyleague/node-standards": "^9.4.0",
-    "@skyleague/therefore": "^6.1.2",
-    "typescript": "^5.7.2",
-    "uuid": "^11.0.3"
+    "@skyleague/node-standards": "^11.0.1",
+    "@skyleague/therefore": "^7.15.1",
+    "typescript": "^5.8.3",
+    "uuid": "^11.1.0"
   },
   "publishConfig": {
     "access": "public",
