@@ -1,19 +1,16 @@
-import { $equal } from './boolean.js'
-import { $filter, $map, $value, type ValueItem } from './higher-order-fn.js'
-import { $fact, $literal, type Fact } from './input.js'
-import { $from } from './input.js'
-import { $add, $modulo, $multiply } from './number.js'
-import { $concat } from './string.js'
-
-import { MathFn } from '../../test/arithmatic.type.js'
-import type { Arithmetic } from '../../test/arithmatic.type.js'
-import { $policy } from '../engine/policy.js'
-import type { Expression, ValueExpression } from '../engine/types.js'
-import type { JSONExpr, NumberArrExpr, NumberExpr } from '../json/jsonexpr.type.js'
-
 import { array, float, forAll } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
 import { describe, expect, expectTypeOf, it } from 'vitest'
+import type { Arithmetic } from '../../test/arithmatic.type.js'
+import { MathFn } from '../../test/arithmatic.type.js'
+import { $policy } from '../engine/policy.js'
+import type { Expression, ValueExpression } from '../engine/types.js'
+import type { JSONExpr, NumberArrExpr, NumberExpr } from '../json/jsonexpr.type.js'
+import { $equal } from './boolean.js'
+import { $filter, $map, $value, type ValueItem } from './higher-order-fn.js'
+import { $fact, $from, $literal, type Fact } from './input.js'
+import { $add, $modulo, $multiply } from './number.js'
+import { $concat } from './string.js'
 
 describe('value', () => {
     it('handles the types', () => {

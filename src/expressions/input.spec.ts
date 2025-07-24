@@ -1,14 +1,12 @@
-import { $fact, $from } from './input.js'
-import { $add } from './number.js'
-
-import { Arithmetic } from '../../test/arithmatic.type.js'
-import { Person } from '../../test/person.type.js'
-import { $policy } from '../engine/policy.js'
-
 import { forAll, tuple } from '@skyleague/axioms'
 import { arbitrary } from '@skyleague/therefore'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { Arithmetic } from '../../test/arithmatic.type.js'
+import { Person } from '../../test/person.type.js'
+import { $policy } from '../engine/policy.js'
+import { $fact, $from } from './input.js'
+import { $add } from './number.js'
 
 describe('fact', () => {
     it('simple single one is used as input', () => {

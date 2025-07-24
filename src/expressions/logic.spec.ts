@@ -1,14 +1,12 @@
-import { $fact, $from, type Fact } from './input.js'
-import { $and, $if, $or } from './logic.js'
-
+import { forAll } from '@skyleague/axioms'
+import { arbitrary } from '@skyleague/therefore'
+import { describe, expect, expectTypeOf, it } from 'vitest'
 import { LogicObj } from '../../test/logic.type.js'
 import { $policy } from '../engine/policy.js'
 import type { ValueExpression } from '../engine/types.js'
 import type { AndExpr, IfExpr, OrExpr } from '../json/jsonexpr.type.js'
-
-import { forAll } from '@skyleague/axioms'
-import { arbitrary } from '@skyleague/therefore'
-import { describe, expect, expectTypeOf, it } from 'vitest'
+import { $fact, $from, type Fact } from './input.js'
+import { $and, $if, $or } from './logic.js'
 
 describe('if', () => {
     it('handles a simple schema case', () => {

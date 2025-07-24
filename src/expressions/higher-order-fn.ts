@@ -1,21 +1,19 @@
+import { inspect } from 'node:util'
+import { JSONPath, type JSONPathValue } from '@skyleague/jsonpath'
 import type { FactsFomExprs } from '../engine/operator.js'
 import type { EvaluationContext } from '../engine/policy.js'
 import {
     type AsExpression,
     type Expression,
     type ExpressionTypeOfLiteral,
+    fromLiteral,
     type InferExpressionType,
     type InputExpression,
     type InputFromExpressions,
     type LiteralOr,
     type ValueExpression,
-    fromLiteral,
 } from '../engine/types.js'
 import type { ValueItemExpr } from '../json/jsonexpr.type.js'
-
-import { JSONPath, type JSONPathValue } from '@skyleague/jsonpath'
-
-import { inspect } from 'node:util'
 
 // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
 export interface Value<O> extends InputExpression<O, any, never, ValueItemExpr> {

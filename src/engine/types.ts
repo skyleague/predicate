@@ -1,4 +1,4 @@
-import type { EvaluationContext } from './policy.js'
+import { inspect } from 'node:util'
 
 import { $literal, type Fact } from '../expressions/input.js'
 import type {
@@ -11,8 +11,7 @@ import type {
     StringExpr,
     ValueItemExpr,
 } from '../json/jsonexpr.type.js'
-
-import { inspect } from 'node:util'
+import type { EvaluationContext } from './policy.js'
 export type ExpressionType = 'fact' | 'value' | 'literal'
 
 export type DefinitionType = 'definition' | 'expression'
