@@ -1,10 +1,8 @@
-import type { DefinitionType, FactExpression, InferExpressionType, InputExpression, LiteralExpression } from '../engine/types.js'
-import type { FromExpr } from '../json/jsonexpr.type.js'
-
+import { inspect } from 'node:util'
 import { JSONPath, type JSONPathValue } from '@skyleague/jsonpath'
 import type { Schema } from '@skyleague/therefore'
-
-import { inspect } from 'node:util'
+import type { DefinitionType, FactExpression, InferExpressionType, InputExpression, LiteralExpression } from '../engine/types.js'
+import type { FromExpr } from '../json/jsonexpr.type.js'
 
 // biome-ignore lint/suspicious/noExplicitAny: this is needed for greedy matching
 export interface Fact<T = any, Name extends string = string> extends FactExpression<T> {
@@ -13,7 +11,60 @@ export interface Fact<T = any, Name extends string = string> extends FactExpress
     _type: 'fact'
 }
 
-export function $fact<T, Name extends string>(schema: Pick<Schema<T>, 'schema' | 'is'>, name: Name): Fact<T, Name> {
+export function $fact<T, Name extends string>(
+    schema: {
+        safeParse: (x: unknown) =>
+            | {
+                  success: true
+                  data: T
+                  error?: never
+              }
+            | {
+                  success: false
+                  error: unknown
+                  data?: never
+              }
+    },
+    name: Name,
+): Fact<T, Name>
+export function $fact<T, Name extends string>(schema: Pick<Schema<T>, 'schema' | 'is'>, name: Name): Fact<T, Name>
+export function $fact<T, Name extends string>(
+    schema:
+        | Pick<Schema<T>, 'schema' | 'is'>
+        | {
+              safeParse: (x: unknown) =>
+                  | {
+                        success: true
+                        data: T
+                        error?: never
+                    }
+                  | {
+                        success: false
+                        error: unknown
+                        data?: never
+                    }
+          },
+    name: Name,
+): Fact<T, Name> {
+    if ('safeParse' in schema) {
+        return {
+            _type: 'fact',
+            dependsOn: [],
+            name: name,
+            fn: ((_: unknown, ctx: { input: Record<Name, T> }) => {
+                return ctx.input[name]
+            }) as Fact<T, Name>['fn'],
+            expr: (definition: DefinitionType): InferExpressionType<T> => {
+                if (definition === 'definition') {
+                    throw new Error('Cannot infer definition for fact with zod schema')
+                }
+                return { fact: name.toString() } as unknown as InferExpressionType<T>
+            },
+            [inspect.custom]() {
+                return `$fact({schema: <JSONSchema>}, "${name}")`
+            },
+        }
+    }
     return {
         _type: 'fact',
         dependsOn: [],
