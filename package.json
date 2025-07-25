@@ -34,15 +34,15 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@skyleague/axioms": "^6.5.1",
+    "@skyleague/axioms": "^6.6.0",
     "@skyleague/jsonpath": "^4.0.1"
   },
   "devDependencies": {
-    "@skyleague/node-standards": "^12.1.3",
+    "@skyleague/node-standards": "^12.2.0",
     "@skyleague/therefore": "^8.1.2",
     "typescript": "^5.8.3",
     "uuid": "^11.1.0",
-    "zod": "^4.0.8"
+    "zod": "^4.0.10"
   },
   "publishConfig": {
     "access": "public",
